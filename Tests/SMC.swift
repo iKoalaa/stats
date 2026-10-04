@@ -1,8 +1,21 @@
 import Foundation
 import IOKit
 
-// OS-boundary replacements used only by run-smc-tests.py's disposable source copy.
+// OS-boundary replacements used by the source-copy runner or standalone test build.
 // No test links an SMC operation to the real driver, including open and close.
+#if SMC_STANDALONE_TESTS
+let IOServiceMatching = mockIOServiceMatching
+let IOServiceGetMatchingServices = mockIOServiceGetMatchingServices
+let IOIteratorNext = mockIOIteratorNext
+@discardableResult
+func IOObjectRelease(_ object: io_object_t) -> kern_return_t { mockIOObjectRelease(object) }
+let IOServiceOpen = mockIOServiceOpen
+let IOServiceClose = mockIOServiceClose
+let IOConnectCallStructMethod = mockIOConnectCallStructMethod
+@discardableResult
+func usleep(_ delay: UInt32) -> Int32 { mockusleep(delay) }
+#endif
+
 final class FakeSMC {
     struct Entry {
         var type: String
@@ -216,6 +229,65 @@ final class SMCTests: XCTestCase {
             XCTAssertEqual(smc.getValue(key), 0)
         }
     }
+    func testIncludeZeroPreservesConfirmedNumericFanReadbacks() {
+        for (type, bytes): (String, [UInt8]) in [
+            ("ui8 ", [0]), ("ui16", [0, 0]), ("ui32", [0, 0, 0, 0]),
+            ("flt ", Float(0).bytes), ("fpe2", [0, 0])
+        ] {
+            let reader = SMC()
+            for key in ["F0Tg", "F1Tg", "Ftst", "F0Mn", "F0Mx", "F0Ac", "F9md", "F9Md", "FNum"] {
+                fake.put(key, type, bytes)
+                XCTAssertNil(reader.getValue(key), "default: \(key), \(type)")
+                XCTAssertNil(reader.getValue(key, includeZero: false), "explicit default: \(key), \(type)")
+                XCTAssertEqual(reader.getValue(key, includeZero: true), 0, "includeZero: \(key), \(type)")
+            }
+        }
+    }
+    func testIncludeZeroDoesNotChangeNonzeroValues() {
+        fake.put("F0Tg", "flt ", Float(2400).bytes)
+        XCTAssertEqual(smc.getValue("F0Tg"), 2400)
+        XCTAssertEqual(smc.getValue("F0Tg", includeZero: true), 2400)
+    }
+    func testIncludeZeroDoesNotFabricateMissingOrEmptyValues() {
+        XCTAssertNil(smc.getValue("F0Tg", includeZero: true))
+        fake.put("F0Tg", "flt ", [])
+        XCTAssertNil(smc.getValue("F0Tg", includeZero: true))
+    }
+    func testIncludeZeroPreservesReadFailures() {
+        for key in ["F0Tg", "Ftst", "F0md"] {
+            fake.put(key, key == "F0Tg" ? "flt " : "ui8 ", key == "F0Tg" ? Float(0).bytes : [0])
+            for command in ["9:\(key)", "5:\(key)"] {
+                for code: UInt8 in [1, 0x84] {
+                    let reader = SMC()
+                    fake.firmwareErrors = [command: code]
+                    XCTAssertNil(reader.getValue(key, includeZero: true), "\(command), firmware \(code)")
+                    fake.firmwareErrors = [:]
+                }
+                let reader = SMC()
+                fake.transportErrors = [command]
+                XCTAssertNil(reader.getValue(key, includeZero: true), "\(command), transport")
+                fake.transportErrors = []
+            }
+        }
+    }
+    func testIncludeZeroDoesNotReturnCachedZeroAfterReadFailure() {
+        fake.put("F0Tg", "flt ", Float(0).bytes)
+        XCTAssertEqual(smc.getValue("F0Tg", includeZero: true), 0)
+        fake.firmwareErrors["5:F0Tg"] = 1
+        XCTAssertNil(smc.getValue("F0Tg", includeZero: true))
+        fake.firmwareErrors = [:]
+        XCTAssertEqual(smc.getValue("F0Tg", includeZero: true), 0)
+        XCTAssertNil(smc.getValue("F0Tg"))
+    }
+    func testIncludeZeroStillRejectsUnsupportedNumericTypes() {
+        for type in ["{fds", "xxxx"] {
+            for bytes in [[UInt8](repeating: 0, count: 16), [0, 0, 0, 0] + Array("  Left Fan  ".utf8)] {
+                let reader = SMC()
+                fake.put("F0ID", type, bytes)
+                XCTAssertNil(reader.getValue("F0ID", includeZero: true), type)
+            }
+        }
+    }
     func testUnknownNumericTypeReturnsNil() {
         fake.put("TEST", "xxxx", [1, 2, 3, 4])
         XCTAssertNil(smc.getValue("TEST"))
@@ -304,6 +376,7 @@ final class SMCTests: XCTestCase {
     func testInvalidKeysNeverReachDriver() {
         for key in ["", "abc", "abcde", "éabc", "😀abc", "e\u{301}abc"] {
             XCTAssertNil(smc.getValue(key))
+            XCTAssertNil(smc.getValue(key, includeZero: true))
             XCTAssertNil(smc.getStringValue(key))
             XCTAssertEqual(smc.write(key, 0), kIOReturnBadArgument)
         }
@@ -411,7 +484,7 @@ final class SMCTests: XCTestCase {
         XCTAssertNil(FanMode(rawValue: 2))
     }
 
-    #if TEST_ARM64
+    #if TEST_ARM64 || (SMC_STANDALONE_TESTS && !TEST_INTEL && arch(arm64))
     func testARMLowercaseModeProbeIsCached() {
         fan()
         XCTAssertEqual(smc.fanModeKey(0), "F0md")
@@ -628,3 +701,15 @@ final class SMCTests: XCTestCase {
     }
     #endif
 }
+
+#if SMC_STANDALONE_TESTS
+@main
+enum SMCTestMain {
+    static func main() {
+        let suite = SMCTests.defaultTestSuite
+        suite.run()
+        guard let result = suite.testRun, result.executionCount > 0 else { exit(1) }
+        exit(result.hasSucceeded ? 0 : 1)
+    }
+}
+#endif

@@ -1150,21 +1150,88 @@ public class SMCHelper {
     }
     
     private var connection: NSXPCConnection? = nil
+    private var fanCommands = FanCurveCommandGate()
+
+    public func cancelDeferredFanCommands(for ids: Set<Int>) {
+        precondition(Thread.isMainThread)
+        self.fanCommands.cancelCommands(for: ids)
+    }
+
+    public func setCurveFanSpeed(_ id: Int, speed: Int, completion: @escaping (Bool) -> Void) {
+        self.curveRequest(id, speed: speed, completion: completion)
+    }
+
+    public func releaseCurveFan(_ id: Int, completion: @escaping (Bool) -> Void) {
+        self.curveRequest(id, speed: nil, completion: completion)
+    }
+
+    private func curveRequest(_ id: Int, speed: Int?, completion: @escaping (Bool) -> Void) {
+        precondition(Thread.isMainThread)
+        let releaseGeneration = speed == nil ? self.fanCommands.beginRelease(id) : nil
+        guard self.isInstalled, let helper = self.helper(nil) else { completion(false); return }
+        var finished = false
+        let finish: (Bool) -> Void = { result in
+            DispatchQueue.main.async {
+                guard !finished else { return }
+                finished = true
+                if let releaseGeneration {
+                    let commands = self.fanCommands.completeRelease(id, generation: releaseGeneration, success: result)
+                    commands.forEach { $0() }
+                }
+                completion(result)
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { finish(false) }
+        // Older installed helpers lack the lease API. Never send curve commands to them.
+        helper.version { version in
+            DispatchQueue.main.async {
+                guard !finished else { return }
+                let parts = version.split(separator: ".").compactMap { Int($0) }
+                guard parts.count >= 2, parts[0] > 1 || (parts[0] == 1 && parts[1] >= 3) else {
+                    if speed == nil {
+                        helper.setFanMode(id: id, mode: 0) { result in
+                            finish(result.map { !$0.lowercased().contains("error") && !$0.lowercased().contains("failed") } ?? false)
+                        }
+                        return
+                    }
+                    finish(false)
+                    return
+                }
+                if let speed {
+                    helper.setCurveFanSpeed(id: id, value: speed, completion: finish)
+                } else {
+                    helper.releaseCurveFan(id: id, completion: finish)
+                }
+            }
+        }
+    }
+
+    private func fanCommand(_ id: Int, command: @escaping (HelperProtocol) -> Void) {
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { self.fanCommand(id, command: command) }
+            return
+        }
+        // A delayed release must complete before a newly selected manual mode is written.
+        guard let helper = self.helper(nil) else { return }
+        if !self.fanCommands.deferCommand(id, command: { command(helper) }) { command(helper) }
+    }
     
     public func setFanSpeed(_ id: Int, speed: Int) {
-        guard let helper = self.helper(nil) else { return }
-        helper.setFanSpeed(id: id, value: speed) { result in
-            if let result, !result.isEmpty {
-                NSLog("set fan speed: \(result)")
+        self.fanCommand(id) { helper in
+            helper.setFanSpeed(id: id, value: speed) { result in
+                if let result, !result.isEmpty {
+                    NSLog("set fan speed: \(result)")
+                }
             }
         }
     }
     
     public func setFanMode(_ id: Int, mode: Int) {
-        guard let helper = self.helper(nil) else { return }
-        helper.setFanMode(id: id, mode: mode) { result in
-            if let result, !result.isEmpty {
-                NSLog("set fan mode: \(result)")
+        self.fanCommand(id) { helper in
+            helper.setFanMode(id: id, mode: mode) { result in
+                if let result, !result.isEmpty {
+                    NSLog("set fan mode: \(result)")
+                }
             }
         }
     }

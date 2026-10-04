@@ -549,6 +549,47 @@
 "Teal" = "Sinivihreä";
 "Indigo" = "Indigo";
 
+// Fan curves
+"Open Fans settings" = "Avaa tuuletinasetukset";
+"No controllable fans are available on this Mac." = "Tässä Macissa ei ole käytettävissä ohjattavia tuulettimia.";
+"Use one temperature curve for all fans." = "Käytä yhtä lämpötilakäyrää kaikille tuulettimille.";
+"Use CPU/GPU load" = "Huomioi CPU/GPU-kuormitus";
+"CPU/GPU load can increase the speed required by the temperature curve." = "CPU/GPU-kuormitus voi nostaa lämpötilakäyrän edellyttämää nopeutta.";
+"Fan control status" = "Tuuletinohjauksen tila";
+"Temperature sensor" = "Lämpötila-anturi";
+"Choose the temperature sensor used by this curve." = "Valitse tämän käyrän käyttämä lämpötila-anturi.";
+"Physical fan" = "Fyysinen tuuletin";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Määritä fyysinen tuuletin tälle profiilille. Tuulettimien järjestys ei kerro, mikä jäähdyttää CPU:ta tai GPU:ta.";
+"Fan speed" = "Tuulettimen nopeus";
+"Enable this curve or return its fans to automatic control." = "Ota tämä käyrä käyttöön tai palauta sen tuulettimet automaattiseen ohjaukseen.";
+"Reset fan curve" = "Nollaa tuuletinkäyrä";
+"Restore the five default points without changing the selected sensor." = "Palauta viisi oletuspistettä muuttamatta valittua anturia.";
+"Unavailable: %0" = "Ei käytettävissä: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Käyrä aktiivinen";
+"Curve inactive" = "Käyrä ei aktiivinen";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 r/min / Tavoite: %2 r/min (%3)";
+"Select an available physical fan to enable this curve." = "Valitse käytettävissä oleva fyysinen tuuletin ottaaksesi tämän käyrän käyttöön.";
+"Stop curve" = "Pysäytä käyrä";
+"Enable curve" = "Ota käyrä käyttöön";
+"Fan curve editor" = "Tuuletinkäyrän muokkain";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Muokkaa pisteitä vetämällä. Lisää piste kaksoisnapsauttamalla tyhjää tilaa; poista piste kaksoisnapsauttamalla sitä.";
+"Maximum of 10 points reached. Remove a point before adding another." = "10 pisteen enimmäismäärä on saavutettu. Poista piste ennen uuden lisäämistä.";
+"The last point cannot be removed." = "Viimeistä pistettä ei voi poistaa.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Käytä 1–10 pistettä 1%:n ja 1 °C:n askelin.";
+"%0% at %1 C" = "%0% lämpötilassa %1 °C";
+"Speed (%)" = "Nopeus (%)";
+"Temperature (C)" = "Lämpötila (°C)";
+"Curve" = "Käyrä";
+"Waiting for fresh temperature data" = "Odotetaan uusia lämpötilatietoja";
+"Waiting for fresh CPU/GPU load" = "Odotetaan uusia CPU/GPU-kuormitustietoja";
+"Select physical fans for CPU and GPU" = "Valitse fyysiset tuulettimet CPU:lle ja GPU:lle";
+"Fan helper unavailable" = "Tuuletinavustaja ei ole käytettävissä";
+"Emergency cooling" = "Hätäjäähdytys";
+"Fan curve command failed" = "Tuuletinkäyrän komento epäonnistui";
+"Fan curve paused" = "Tuuletinkäyrä keskeytetty";
+"Fan curve configuration invalid" = "Tuuletinkäyrän määritys on virheellinen";
+
 // System Stats
 "Authorization" = "Valtuutus"; // qwen3.8:27b
 "Identificator" = "Tunniste"; // qwen3.8:27b

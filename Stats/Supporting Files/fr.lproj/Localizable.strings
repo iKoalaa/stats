@@ -549,6 +549,47 @@
 "Teal" = "Sarcelle";
 "Indigo" = "Indigo";
 
+// Fan curves
+"Open Fans settings" = "Ouvrir les réglages des ventilateurs";
+"No controllable fans are available on this Mac." = "Aucun ventilateur contrôlable n'est disponible sur ce Mac.";
+"Use one temperature curve for all fans." = "Utiliser une seule courbe de température pour tous les ventilateurs.";
+"Use CPU/GPU load" = "Tenir compte de la charge CPU/GPU";
+"CPU/GPU load can increase the speed required by the temperature curve." = "La charge CPU/GPU peut augmenter la vitesse requise par la courbe de température.";
+"Fan control status" = "État du contrôle des ventilateurs";
+"Temperature sensor" = "Capteur de température";
+"Choose the temperature sensor used by this curve." = "Choisissez le capteur de température utilisé par cette courbe.";
+"Physical fan" = "Ventilateur physique";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Affectez un ventilateur physique à ce profil. L'ordre des ventilateurs n'indique pas lequel refroidit le CPU ou le GPU.";
+"Fan speed" = "Vitesse du ventilateur";
+"Enable this curve or return its fans to automatic control." = "Activez cette courbe ou remettez ses ventilateurs en contrôle automatique.";
+"Reset fan curve" = "Réinitialiser la courbe du ventilateur";
+"Restore the five default points without changing the selected sensor." = "Restaurer les cinq points par défaut sans changer le capteur sélectionné.";
+"Unavailable: %0" = "Indisponible : %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Courbe active";
+"Curve inactive" = "Courbe inactive";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0 : %1 tr/min / Cible : %2 tr/min (%3)";
+"Select an available physical fan to enable this curve." = "Sélectionnez un ventilateur physique disponible pour activer cette courbe.";
+"Stop curve" = "Arrêter la courbe";
+"Enable curve" = "Activer la courbe";
+"Fan curve editor" = "Éditeur de courbe de ventilateur";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Faites glisser les points pour les modifier. Double-cliquez sur un espace vide pour ajouter un point ; double-cliquez sur un point pour le supprimer.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Le maximum de 10 points est atteint. Supprimez un point avant d'en ajouter un autre.";
+"The last point cannot be removed." = "Le dernier point ne peut pas être supprimé.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Utilisez de 1 à 10 points, par pas de 1% et de 1 °C.";
+"%0% at %1 C" = "%0% à %1 °C";
+"Speed (%)" = "Vitesse (%)";
+"Temperature (C)" = "Température (°C)";
+"Curve" = "Courbe";
+"Waiting for fresh temperature data" = "En attente de nouvelles données de température";
+"Waiting for fresh CPU/GPU load" = "En attente de nouvelles données de charge CPU/GPU";
+"Select physical fans for CPU and GPU" = "Sélectionnez les ventilateurs physiques pour le CPU et le GPU";
+"Fan helper unavailable" = "Assistant de ventilation indisponible";
+"Emergency cooling" = "Refroidissement d'urgence";
+"Fan curve command failed" = "Échec de la commande de courbe du ventilateur";
+"Fan curve paused" = "Courbe du ventilateur en pause";
+"Fan curve configuration invalid" = "Configuration de la courbe du ventilateur invalide";
+
 // System Stats
 "Authorization" = "Autorisation"; // qwen3.8:27b
 "Identificator" = "Identifiant"; // qwen3.8:27b

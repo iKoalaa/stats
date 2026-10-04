@@ -549,6 +549,47 @@
 "Teal" = "Turcoaz"; // gemma4:31b
 "Indigo" = "Indigou"; // gemma4:31b-it-qat
 
+// Fan curves
+"Open Fans settings" = "Deschide setările ventilatoarelor";
+"No controllable fans are available on this Mac." = "Nu sunt disponibile ventilatoare controlabile pe acest Mac.";
+"Use one temperature curve for all fans." = "Folosește o singură curbă de temperatură pentru toate ventilatoarele.";
+"Use CPU/GPU load" = "Ia în calcul încărcarea CPU/GPU";
+"CPU/GPU load can increase the speed required by the temperature curve." = "Încărcarea CPU/GPU poate crește viteza cerută de curba de temperatură.";
+"Fan control status" = "Starea controlului ventilatoarelor";
+"Temperature sensor" = "Senzor de temperatură";
+"Choose the temperature sensor used by this curve." = "Alege senzorul de temperatură folosit de această curbă.";
+"Physical fan" = "Ventilator fizic";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Atribuie un ventilator fizic acestui profil. Ordinea ventilatoarelor nu indică care răcește CPU sau GPU.";
+"Fan speed" = "Viteza ventilatorului";
+"Enable this curve or return its fans to automatic control." = "Activează această curbă sau readu ventilatoarele sale la controlul automat.";
+"Reset fan curve" = "Resetează curba ventilatorului";
+"Restore the five default points without changing the selected sensor." = "Restabilește cele cinci puncte implicite fără a schimba senzorul selectat.";
+"Unavailable: %0" = "Indisponibil: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Curbă activă";
+"Curve inactive" = "Curbă inactivă";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 rot/min / Țintă: %2 rot/min (%3)";
+"Select an available physical fan to enable this curve." = "Selectează un ventilator fizic disponibil pentru a activa această curbă.";
+"Stop curve" = "Oprește curba";
+"Enable curve" = "Activează curba";
+"Fan curve editor" = "Editor de curbe pentru ventilatoare";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Trage punctele pentru a le edita. Fă dublu clic pe un spațiu gol pentru a adăuga un punct; fă dublu clic pe un punct pentru a-l elimina.";
+"Maximum of 10 points reached. Remove a point before adding another." = "S-a atins limita de 10 puncte. Elimină un punct înainte de a adăuga altul.";
+"The last point cannot be removed." = "Ultimul punct nu poate fi eliminat.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Folosește între 1 și 10 puncte, în pași de 1% și 1 °C.";
+"%0% at %1 C" = "%0% la %1 °C";
+"Speed (%)" = "Viteză (%)";
+"Temperature (C)" = "Temperatură (°C)";
+"Curve" = "Curbă";
+"Waiting for fresh temperature data" = "Se așteaptă date noi de temperatură";
+"Waiting for fresh CPU/GPU load" = "Se așteaptă date noi despre încărcarea CPU/GPU";
+"Select physical fans for CPU and GPU" = "Selectează ventilatoare fizice pentru CPU și GPU";
+"Fan helper unavailable" = "Asistentul pentru ventilatoare nu este disponibil";
+"Emergency cooling" = "Răcire de urgență";
+"Fan curve command failed" = "Comanda curbei ventilatorului a eșuat";
+"Fan curve paused" = "Curba ventilatorului este în pauză";
+"Fan curve configuration invalid" = "Configurația curbei ventilatorului este nevalidă";
+
 // System Stats
 "Authorization" = "Autorizare"; // qwen3.8:27b
 "Identificator" = "Identificator";

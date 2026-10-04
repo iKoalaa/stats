@@ -44,6 +44,25 @@ public class Sensors: Module {
         self.sensorsReader = SensorsReader { [weak self] value in
             self?.usageCallback(value)
         }
+        self.sensorsReader?.fanControlSampleHandler = { sample in
+            DispatchQueue.main.async {
+                FanCurveController.shared.updateSensors(fans: sample.fans, sensors: sample.sensors,
+                    hotTemperature: sample.hotTemperature, at: sample.timestamp)
+            }
+        }
+        let metadata = self.sensorsReader?.list.sensors ?? []
+        let fans = metadata.compactMap { $0 as? Fan }.filter { !$0.isComputed }.map {
+            let valid = $0.minSpeed.isFinite && $0.maxSpeed.isFinite && $0.minSpeed >= 0 &&
+                $0.minSpeed != 1 && $0.maxSpeed > 1 && $0.maxSpeed > $0.minSpeed
+            return FanCurveFan(id: $0.id, name: $0.name,
+                minRPM: valid ? $0.minSpeed : 0, maxRPM: valid ? $0.maxSpeed : 0, rpm: 0)
+        }
+        let temperatures = metadata.filter { $0.type == .temperature }.map {
+            FanCurveSensor(key: $0.key, name: $0.name, value: nil)
+        }
+        DispatchQueue.main.async {
+            FanCurveController.shared.updateSensors(fans: fans, sensors: temperatures, hotTemperature: nil, at: 0)
+        }
         
         self.settingsView.setList(self.sensorsReader?.list.sensors)
         self.popupView.setup(self.sensorsReader?.list.sensors)
@@ -87,6 +106,13 @@ public class Sensors: Module {
         self.setReaders([self.sensorsReader])
     }
     
+    public func setFanControlDemand(_ enabled: Bool) {
+        guard let reader = self.sensorsReader else { return }
+        reader.initStoreValues(title: self.config.name)
+        reader.setControlDemand(enabled)
+        if !enabled { self.refreshReader(reader) }
+    }
+
     public override func willTerminate() {
         guard SMCHelper.shared.isActive(), let reader = self.sensorsReader else { return }
         

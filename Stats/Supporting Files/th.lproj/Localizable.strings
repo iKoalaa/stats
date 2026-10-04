@@ -549,6 +549,47 @@
 "Teal" = "น้ำตาลเขียว";
 "Indigo" = "น้ำเงินม่วง";
 
+// Fan curves
+"Open Fans settings" = "เปิดการตั้งค่าพัดลม";
+"No controllable fans are available on this Mac." = "ไม่มีพัดลมที่สามารถควบคุมได้บน Mac เครื่องนี้";
+"Use one temperature curve for all fans." = "ใช้เส้นโค้งอุณหภูมิเดียวสำหรับพัดลมทั้งหมด";
+"Use CPU/GPU load" = "คำนึงถึงภาระ CPU/GPU";
+"CPU/GPU load can increase the speed required by the temperature curve." = "ภาระ CPU/GPU อาจเพิ่มความเร็วที่เส้นโค้งอุณหภูมิกำหนด";
+"Fan control status" = "สถานะการควบคุมพัดลม";
+"Temperature sensor" = "เซ็นเซอร์อุณหภูมิ";
+"Choose the temperature sensor used by this curve." = "เลือกเซ็นเซอร์อุณหภูมิที่ใช้กับเส้นโค้งนี้";
+"Physical fan" = "พัดลมจริง";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "กำหนดพัดลมจริงให้กับโปรไฟล์นี้ ลำดับของพัดลมไม่ได้ระบุว่าพัดลมใดระบายความร้อนให้ CPU หรือ GPU";
+"Fan speed" = "ความเร็วพัดลม";
+"Enable this curve or return its fans to automatic control." = "เปิดใช้เส้นโค้งนี้หรือเปลี่ยนพัดลมของเส้นโค้งกลับไปเป็นการควบคุมอัตโนมัติ";
+"Reset fan curve" = "รีเซ็ตเส้นโค้งพัดลม";
+"Restore the five default points without changing the selected sensor." = "คืนค่าจุดเริ่มต้นทั้งห้าจุดโดยไม่เปลี่ยนเซ็นเซอร์ที่เลือก";
+"Unavailable: %0" = "ไม่พร้อมใช้งาน: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "เส้นโค้งทำงานอยู่";
+"Curve inactive" = "เส้นโค้งไม่ได้ทำงาน";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 รอบ/นาที / เป้าหมาย: %2 รอบ/นาที (%3)";
+"Select an available physical fan to enable this curve." = "เลือกพัดลมจริงที่พร้อมใช้งานเพื่อเปิดใช้เส้นโค้งนี้";
+"Stop curve" = "หยุดเส้นโค้ง";
+"Enable curve" = "เปิดใช้เส้นโค้ง";
+"Fan curve editor" = "ตัวแก้ไขเส้นโค้งพัดลม";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "ลากจุดเพื่อแก้ไข ดับเบิลคลิกพื้นที่ว่างเพื่อเพิ่มจุด และดับเบิลคลิกจุดเพื่อลบจุดนั้น";
+"Maximum of 10 points reached. Remove a point before adding another." = "ถึงจำนวนสูงสุด 10 จุดแล้ว ลบจุดหนึ่งก่อนเพิ่มจุดใหม่";
+"The last point cannot be removed." = "ไม่สามารถลบจุดสุดท้ายได้";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "ใช้ 1 ถึง 10 จุด โดยปรับทีละ 1% และ 1 °C";
+"%0% at %1 C" = "%0% ที่ %1 °C";
+"Speed (%)" = "ความเร็ว (%)";
+"Temperature (C)" = "อุณหภูมิ (°C)";
+"Curve" = "เส้นโค้ง";
+"Waiting for fresh temperature data" = "กำลังรอข้อมูลอุณหภูมิล่าสุด";
+"Waiting for fresh CPU/GPU load" = "กำลังรอข้อมูลภาระ CPU/GPU ล่าสุด";
+"Select physical fans for CPU and GPU" = "เลือกพัดลมจริงสำหรับ CPU และ GPU";
+"Fan helper unavailable" = "ตัวช่วยพัดลมไม่พร้อมใช้งาน";
+"Emergency cooling" = "การระบายความร้อนฉุกเฉิน";
+"Fan curve command failed" = "คำสั่งเส้นโค้งพัดลมล้มเหลว";
+"Fan curve paused" = "เส้นโค้งพัดลมหยุดชั่วคราว";
+"Fan curve configuration invalid" = "การกำหนดค่าเส้นโค้งพัดลมไม่ถูกต้อง";
+
 // System Stats
 "Authorization" = "การอนุญาต"; // qwen3.8:27b
 "Identificator" = "ตัวระบุ"; // qwen3.8:27b

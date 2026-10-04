@@ -549,6 +549,47 @@
 "Teal" = "Turkizna"; // gemma4:31b
 "Indigo" = "Indigo";
 
+// Fan curves
+"Open Fans settings" = "Odpri nastavitve ventilatorjev";
+"No controllable fans are available on this Mac." = "Na tem Macu ni na voljo ventilatorjev, ki jih je mogoče upravljati.";
+"Use one temperature curve for all fans." = "Uporabi eno temperaturno krivuljo za vse ventilatorje.";
+"Use CPU/GPU load" = "Upoštevaj obremenitev CPU/GPU";
+"CPU/GPU load can increase the speed required by the temperature curve." = "Obremenitev CPU/GPU lahko poveča hitrost, ki jo zahteva temperaturna krivulja.";
+"Fan control status" = "Stanje upravljanja ventilatorjev";
+"Temperature sensor" = "Temperaturno tipalo";
+"Choose the temperature sensor used by this curve." = "Izberite temperaturno tipalo, ki ga uporablja ta krivulja.";
+"Physical fan" = "Fizični ventilator";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Temu profilu dodelite fizični ventilator. Vrstni red ventilatorjev ne določa, kateri hladi CPU ali GPU.";
+"Fan speed" = "Hitrost ventilatorja";
+"Enable this curve or return its fans to automatic control." = "Omogočite to krivuljo ali vrnite njene ventilatorje v samodejno upravljanje.";
+"Reset fan curve" = "Ponastavi krivuljo ventilatorja";
+"Restore the five default points without changing the selected sensor." = "Obnovi pet privzetih točk brez spremembe izbranega tipala.";
+"Unavailable: %0" = "Ni na voljo: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Krivulja aktivna";
+"Curve inactive" = "Krivulja neaktivna";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 vrt/min / Cilj: %2 vrt/min (%3)";
+"Select an available physical fan to enable this curve." = "Izberite razpoložljiv fizični ventilator, da omogočite to krivuljo.";
+"Stop curve" = "Ustavi krivuljo";
+"Enable curve" = "Omogoči krivuljo";
+"Fan curve editor" = "Urejevalnik krivulje ventilatorja";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Točke urejajte z vlečenjem. Dvokliknite prazen prostor, da dodate točko; dvokliknite točko, da jo odstranite.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Doseženo je največje število 10 točk. Pred dodajanjem nove točke odstranite eno.";
+"The last point cannot be removed." = "Zadnje točke ni mogoče odstraniti.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Uporabite od 1 do 10 točk v korakih po 1% in 1 °C.";
+"%0% at %1 C" = "%0% pri %1 °C";
+"Speed (%)" = "Hitrost (%)";
+"Temperature (C)" = "Temperatura (°C)";
+"Curve" = "Krivulja";
+"Waiting for fresh temperature data" = "Čakanje na sveže temperaturne podatke";
+"Waiting for fresh CPU/GPU load" = "Čakanje na sveže podatke o obremenitvi CPU/GPU";
+"Select physical fans for CPU and GPU" = "Izberite fizične ventilatorje za CPU in GPU";
+"Fan helper unavailable" = "Pomočnik za ventilatorje ni na voljo";
+"Emergency cooling" = "Zasilno hlajenje";
+"Fan curve command failed" = "Ukaz krivulje ventilatorja ni uspel";
+"Fan curve paused" = "Krivulja ventilatorja začasno ustavljena";
+"Fan curve configuration invalid" = "Neveljavna konfiguracija krivulje ventilatorja";
+
 // System Stats
 "Authorization" = "Pooblastilo"; // qwen3.8:27b
 "Identificator" = "Identifikator"; // qwen3.8:27b

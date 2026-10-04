@@ -549,6 +549,47 @@
 "Teal" = "Zöldeskék";
 "Indigo" = "Indigó";
 
+// Fan curves
+"Open Fans settings" = "Ventilátorbeállítások megnyitása";
+"No controllable fans are available on this Mac." = "Ezen a Macen nem érhetők el vezérelhető ventilátorok.";
+"Use one temperature curve for all fans." = "Egyetlen hőmérsékleti görbe használata minden ventilátorhoz.";
+"Use CPU/GPU load" = "CPU/GPU-terhelés figyelembevétele";
+"CPU/GPU load can increase the speed required by the temperature curve." = "A CPU/GPU-terhelés növelheti a hőmérsékleti görbe által előírt fordulatszámot.";
+"Fan control status" = "Ventilátorvezérlés állapota";
+"Temperature sensor" = "Hőmérséklet-érzékelő";
+"Choose the temperature sensor used by this curve." = "Válassza ki a görbe által használt hőmérséklet-érzékelőt.";
+"Physical fan" = "Fizikai ventilátor";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Rendeljen fizikai ventilátort ehhez a profilhoz. A ventilátorok sorrendje nem jelzi, melyik hűti a CPU-t vagy a GPU-t.";
+"Fan speed" = "Ventilátor fordulatszáma";
+"Enable this curve or return its fans to automatic control." = "Engedélyezze ezt a görbét, vagy állítsa vissza a ventilátorait automatikus vezérlésre.";
+"Reset fan curve" = "Ventilátorgörbe visszaállítása";
+"Restore the five default points without changing the selected sensor." = "Az öt alapértelmezett pont visszaállítása a kiválasztott érzékelő módosítása nélkül.";
+"Unavailable: %0" = "Nem érhető el: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Görbe aktív";
+"Curve inactive" = "Görbe inaktív";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 ford/perc / Cél: %2 ford/perc (%3)";
+"Select an available physical fan to enable this curve." = "A görbe engedélyezéséhez válasszon elérhető fizikai ventilátort.";
+"Stop curve" = "Görbe leállítása";
+"Enable curve" = "Görbe engedélyezése";
+"Fan curve editor" = "Ventilátorgörbe-szerkesztő";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "A szerkesztéshez húzza a pontokat. Új pont hozzáadásához kattintson duplán egy üres helyre; egy pont eltávolításához kattintson rá duplán.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Elérte a legfeljebb 10 pontos korlátot. Új pont hozzáadása előtt távolítson el egy pontot.";
+"The last point cannot be removed." = "Az utolsó pont nem távolítható el.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Használjon 1–10 pontot, 1%-os és 1 °C-os lépésekben.";
+"%0% at %1 C" = "%0% %1 °C-on";
+"Speed (%)" = "Fordulatszám (%)";
+"Temperature (C)" = "Hőmérséklet (°C)";
+"Curve" = "Görbe";
+"Waiting for fresh temperature data" = "Várakozás friss hőmérsékleti adatokra";
+"Waiting for fresh CPU/GPU load" = "Várakozás friss CPU/GPU-terhelési adatokra";
+"Select physical fans for CPU and GPU" = "Válasszon fizikai ventilátorokat a CPU-hoz és a GPU-hoz";
+"Fan helper unavailable" = "A ventilátor-segédprogram nem érhető el";
+"Emergency cooling" = "Vészhűtés";
+"Fan curve command failed" = "A ventilátorgörbe parancsa sikertelen";
+"Fan curve paused" = "Ventilátorgörbe szüneteltetve";
+"Fan curve configuration invalid" = "Érvénytelen ventilátorgörbe-konfiguráció";
+
 // System Stats
 "Authorization" = "Hitelesítés"; // qwen3.8:27b
 "Identificator" = "Azonosító"; // qwen3.8:27b

@@ -148,6 +148,13 @@ public class GPU: Module {
         self.infoReader = InfoReader(.GPU) { [weak self] value in
             self?.infoCallback(value)
         }
+        self.infoReader?.measurementHandler = { value, timestamp in
+            let load = value?.list.compactMap { $0.utilization }
+                .filter { $0.isFinite && (0...1).contains($0) }.max()
+            DispatchQueue.main.async {
+                FanCurveController.shared.updateLoad(.gpu, value: load, at: timestamp)
+            }
+        }
         self.selectedGPU = Store.shared.string(key: "\(self.config.name)_gpu", defaultValue: self.selectedGPU)
         
         self.settingsView.selectedGPUHandler = { [weak self] value in
@@ -164,6 +171,13 @@ public class GPU: Module {
         self.setReaders([self.infoReader])
     }
     
+    public func setFanControlDemand(_ enabled: Bool) {
+        guard let reader = self.infoReader else { return }
+        reader.initStoreValues(title: self.config.name)
+        reader.setControlDemand(enabled)
+        if !enabled { self.refreshReader(reader) }
+    }
+
     private func infoCallback(_ raw: GPUs?) {
         guard raw != nil && !raw!.list.isEmpty, let value = raw, self.enabled else { return }
         

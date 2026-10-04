@@ -549,6 +549,47 @@
 "Teal" = "Türkiis"; // gemma4:31b
 "Indigo" = "Indigo";
 
+// Fan curves
+"Open Fans settings" = "Ava ventilaatorite seaded";
+"No controllable fans are available on this Mac." = "Selles Macis pole juhitavaid ventilaatoreid saadaval.";
+"Use one temperature curve for all fans." = "Kasuta kõigi ventilaatorite jaoks ühte temperatuurikõverat.";
+"Use CPU/GPU load" = "Arvesta CPU/GPU koormust";
+"CPU/GPU load can increase the speed required by the temperature curve." = "CPU/GPU koormus võib suurendada temperatuurikõvera nõutavat kiirust.";
+"Fan control status" = "Ventilaatorite juhtimise olek";
+"Temperature sensor" = "Temperatuuriandur";
+"Choose the temperature sensor used by this curve." = "Vali selle kõvera kasutatav temperatuuriandur.";
+"Physical fan" = "Füüsiline ventilaator";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Määra sellele profiilile füüsiline ventilaator. Ventilaatorite järjekord ei näita, milline jahutab CPU-d või GPU-d.";
+"Fan speed" = "Ventilaatori kiirus";
+"Enable this curve or return its fans to automatic control." = "Luba see kõver või vii selle ventilaatorid tagasi automaatjuhtimisele.";
+"Reset fan curve" = "Lähtesta ventilaatori kõver";
+"Restore the five default points without changing the selected sensor." = "Taasta viis vaikepunkti valitud andurit muutmata.";
+"Unavailable: %0" = "Pole saadaval: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Kõver aktiivne";
+"Curve inactive" = "Kõver mitteaktiivne";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 p/min / Siht: %2 p/min (%3)";
+"Select an available physical fan to enable this curve." = "Selle kõvera lubamiseks vali saadaolev füüsiline ventilaator.";
+"Stop curve" = "Peata kõver";
+"Enable curve" = "Luba kõver";
+"Fan curve editor" = "Ventilaatori kõvera redaktor";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Muutmiseks lohista punkte. Punkti lisamiseks tee topeltklõps tühjal alal; punkti eemaldamiseks tee sellel topeltklõps.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Saavutatud on 10 punkti piir. Enne uue punkti lisamist eemalda üks punkt.";
+"The last point cannot be removed." = "Viimast punkti ei saa eemaldada.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Kasuta 1 kuni 10 punkti sammudega 1% ja 1 °C.";
+"%0% at %1 C" = "%0% temperatuuril %1 °C";
+"Speed (%)" = "Kiirus (%)";
+"Temperature (C)" = "Temperatuur (°C)";
+"Curve" = "Kõver";
+"Waiting for fresh temperature data" = "Uute temperatuuriandmete ootel";
+"Waiting for fresh CPU/GPU load" = "Uute CPU/GPU koormusandmete ootel";
+"Select physical fans for CPU and GPU" = "Vali CPU ja GPU jaoks füüsilised ventilaatorid";
+"Fan helper unavailable" = "Ventilaatorite abiprogramm pole saadaval";
+"Emergency cooling" = "Avariijahutus";
+"Fan curve command failed" = "Ventilaatori kõvera käsk ebaõnnestus";
+"Fan curve paused" = "Ventilaatori kõver peatatud";
+"Fan curve configuration invalid" = "Ventilaatori kõvera seadistus on vigane";
+
 // System Stats
 "Authorization" = "Volitamine"; // qwen3.8:27b
 "Identificator" = "Idendifikaator"; // qwen3.8:27b

@@ -58,6 +58,7 @@ func main() {
     
     switch cmd {
     case .list:
+        let strict = args.contains("--strict")
         var keys = SMC.shared.getAllKeys()
         args.forEach { (arg: String) in
             let flag = FlagsType(value: arg)
@@ -65,12 +66,23 @@ func main() {
                 keys = keys.filter{ $0.hasPrefix(flag.rawValue)}
             }
         }
+        if strict && args.contains("-f") {
+            keys = keys.filter {
+                ["FNum", "FS! ", "Ftst"].contains($0) ||
+                    $0.range(of: "^F[0-9](Mn|Mx|Tg|Md|md|Ac)$", options: .regularExpression) != nil
+            }
+        }
         
         print("[INFO]: found \(keys.count) keys\n")
         
         keys.forEach { (key: String) in
-            let value = SMC.shared.getValue(key)
-            print("[\(key)]    ", value ?? 0)
+            let value = SMC.shared.getValue(key, includeZero: strict)
+            if strict && value == nil {
+                print("[\(key)]    ", "UNAVAILABLE")
+                FileHandle.standardError.write(Data("[ERROR]: unable to read value for \(key)\n".utf8))
+            } else {
+                print("[\(key)]    ", value ?? 0)
+            }
         }
     case .set:
         guard let keyIndex = args.firstIndex(where: { $0 == "-k" }),
@@ -163,7 +175,8 @@ func main() {
         print("  -t    list temperature sensors")
         print("  -v    list voltage sensors (list cmd) / value (set cmd)")
         print("  -p    list power sensors")
-        print("  -f    list fans\n")
+        print("  -f    list fans")
+        print("  --strict    mark unavailable values in list output\n")
     }
 }
 

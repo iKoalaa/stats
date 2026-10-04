@@ -143,6 +143,12 @@ public class CPU: Module {
         self.loadReader = LoadReader(.CPU) { [weak self] value in
             self?.loadCallback(value)
         }
+        self.loadReader?.measurementHandler = { value, timestamp in
+            let load = value.map { $0.totalUsage }.flatMap { $0.isFinite && (0...1).contains($0) ? $0 : nil }
+            DispatchQueue.main.async {
+                FanCurveController.shared.updateLoad(.cpu, value: load, at: timestamp)
+            }
+        }
         self.processReader = ProcessReader(.CPU) { [weak self] value in
             self?.popupView.processCallback(value)
         }
@@ -192,6 +198,13 @@ public class CPU: Module {
         ])
     }
     
+    public func setFanControlDemand(_ enabled: Bool) {
+        guard let reader = self.loadReader else { return }
+        reader.initStoreValues(title: self.config.name)
+        reader.setControlDemand(enabled)
+        if !enabled { self.refreshReader(reader) }
+    }
+
     private func loadCallback(_ raw: CPU_Load?) {
         guard let value = raw, self.enabled else { return }
         

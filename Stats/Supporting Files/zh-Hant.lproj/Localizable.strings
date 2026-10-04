@@ -549,6 +549,47 @@
 "Teal" = "藍綠色";
 "Indigo" = "靛色";
 
+// Fan curves
+"Open Fans settings" = "開啟風扇設定";
+"No controllable fans are available on this Mac." = "這部 Mac 上沒有可控制的風扇。";
+"Use one temperature curve for all fans." = "所有風扇使用同一條溫度曲線。";
+"Use CPU/GPU load" = "考量 CPU/GPU 負載";
+"CPU/GPU load can increase the speed required by the temperature curve." = "CPU/GPU 負載可能使轉速高於溫度曲線要求的轉速。";
+"Fan control status" = "風扇控制狀態";
+"Temperature sensor" = "溫度感測器";
+"Choose the temperature sensor used by this curve." = "選擇此曲線使用的溫度感測器。";
+"Physical fan" = "實體風扇";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "為此設定檔指派一個實體風扇。風扇的順序並不表示其用於 CPU 還是 GPU 散熱。";
+"Fan speed" = "風扇轉速";
+"Enable this curve or return its fans to automatic control." = "啟用此曲線，或將其風扇恢復為自動控制。";
+"Reset fan curve" = "重設風扇曲線";
+"Restore the five default points without changing the selected sensor." = "恢復五個預設點，不變更所選感測器。";
+"Unavailable: %0" = "無法使用：%0";
+"%0 C" = "%0 °C";
+"Curve active" = "曲線已啟用";
+"Curve inactive" = "曲線未啟用";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0：%1 RPM / 目標：%2 RPM（%3）";
+"Select an available physical fan to enable this curve." = "選擇一個可用的實體風扇以啟用此曲線。";
+"Stop curve" = "停止曲線";
+"Enable curve" = "啟用曲線";
+"Fan curve editor" = "風扇曲線編輯器";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "拖曳點進行編輯。按兩下空白處新增點；按兩下點將其移除。";
+"Maximum of 10 points reached. Remove a point before adding another." = "已達到最多 10 個點的限制。新增點前請先移除一個點。";
+"The last point cannot be removed." = "無法移除最後一個點。";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "使用 1 至 10 個點，以 1% 和 1 °C 為間隔。";
+"%0% at %1 C" = "%1 °C 時為 %0%";
+"Speed (%)" = "轉速 (%)";
+"Temperature (C)" = "溫度 (°C)";
+"Curve" = "曲線";
+"Waiting for fresh temperature data" = "正在等待最新溫度資料";
+"Waiting for fresh CPU/GPU load" = "正在等待最新 CPU/GPU 負載資料";
+"Select physical fans for CPU and GPU" = "為 CPU 和 GPU 選擇實體風扇";
+"Fan helper unavailable" = "風扇輔助程式無法使用";
+"Emergency cooling" = "緊急散熱";
+"Fan curve command failed" = "風扇曲線指令執行失敗";
+"Fan curve paused" = "風扇曲線已暫停";
+"Fan curve configuration invalid" = "風扇曲線設定無效";
+
 // System Stats
 "Authorization" = "授權"; // qwen3.8:27b
 "Identificator" = "識別碼"; // qwen3.8:27b

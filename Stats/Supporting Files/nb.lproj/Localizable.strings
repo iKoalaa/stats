@@ -549,6 +549,47 @@
 "Teal" = "Blågrønn";
 "Indigo" = "Indigo";
 
+// Fan curves
+"Open Fans settings" = "Åpne vifteinnstillinger";
+"No controllable fans are available on this Mac." = "Ingen styrbare vifter er tilgjengelige på denne Macen.";
+"Use one temperature curve for all fans." = "Bruk én temperaturkurve for alle vifter.";
+"Use CPU/GPU load" = "Ta hensyn til CPU/GPU-belastning";
+"CPU/GPU load can increase the speed required by the temperature curve." = "CPU/GPU-belastningen kan øke hastigheten som temperaturkurven krever.";
+"Fan control status" = "Status for viftestyring";
+"Temperature sensor" = "Temperatursensor";
+"Choose the temperature sensor used by this curve." = "Velg temperatursensoren som denne kurven bruker.";
+"Physical fan" = "Fysisk vifte";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Tilordne en fysisk vifte til denne profilen. Viftenes rekkefølge angir ikke hvilken som kjøler CPU eller GPU.";
+"Fan speed" = "Viftehastighet";
+"Enable this curve or return its fans to automatic control." = "Aktiver denne kurven eller sett viftene tilbake til automatisk styring.";
+"Reset fan curve" = "Tilbakestill viftekurve";
+"Restore the five default points without changing the selected sensor." = "Gjenopprett de fem standardpunktene uten å endre den valgte sensoren.";
+"Unavailable: %0" = "Utilgjengelig: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Kurve aktiv";
+"Curve inactive" = "Kurve inaktiv";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 o/min / Mål: %2 o/min (%3)";
+"Select an available physical fan to enable this curve." = "Velg en tilgjengelig fysisk vifte for å aktivere denne kurven.";
+"Stop curve" = "Stopp kurve";
+"Enable curve" = "Aktiver kurve";
+"Fan curve editor" = "Viftekurveredigerer";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Dra punkter for å redigere. Dobbeltklikk på et tomt område for å legge til et punkt; dobbeltklikk på et punkt for å fjerne det.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Maksimum på 10 punkter er nådd. Fjern et punkt før du legger til et nytt.";
+"The last point cannot be removed." = "Det siste punktet kan ikke fjernes.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Bruk 1 til 10 punkter i trinn på 1% og 1 °C.";
+"%0% at %1 C" = "%0% ved %1 °C";
+"Speed (%)" = "Hastighet (%)";
+"Temperature (C)" = "Temperatur (°C)";
+"Curve" = "Kurve";
+"Waiting for fresh temperature data" = "Venter på nye temperaturdata";
+"Waiting for fresh CPU/GPU load" = "Venter på nye data om CPU/GPU-belastning";
+"Select physical fans for CPU and GPU" = "Velg fysiske vifter for CPU og GPU";
+"Fan helper unavailable" = "Viftehjelper utilgjengelig";
+"Emergency cooling" = "Nødkjøling";
+"Fan curve command failed" = "Viftekurvekommando mislyktes";
+"Fan curve paused" = "Viftekurve satt på pause";
+"Fan curve configuration invalid" = "Ugyldig viftekurvekonfigurasjon";
+
 // System Stats
 "Authorization" = "Autorisasjon"; // qwen3.8:27b
 "Identificator" = "Identifikator"; // qwen3.8:27b

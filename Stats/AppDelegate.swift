@@ -76,6 +76,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         self.parseArguments()
         self.parseVersion()
         SMCHelper.shared.checkForUpdate()
+        FanCurveController.shared.start { sensors, load in
+            modules.compactMap { $0 as? Sensors }.forEach { $0.setFanControlDemand(sensors) }
+            modules.compactMap { $0 as? CPU }.forEach { $0.setFanControlDemand(load) }
+            modules.compactMap { $0 as? GPU }.forEach { $0.setFanControlDemand(load) }
+        }
         self.setup {
             modules.reversed().forEach{ $0.mount() }
             self.modulesMounted = true
@@ -103,6 +108,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
+        FanCurveController.shared.terminate()
         modules.forEach{ $0.terminate() }
         SystemStats.shared.terminate()
     }

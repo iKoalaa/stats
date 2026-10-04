@@ -549,6 +549,47 @@
 "Teal" = "टील";
 "Indigo" = "इंडिगो";
 
+// Fan curves
+"Open Fans settings" = "पंखों की सेटिंग खोलें";
+"No controllable fans are available on this Mac." = "इस Mac पर नियंत्रित किए जा सकने वाले पंखे उपलब्ध नहीं हैं।";
+"Use one temperature curve for all fans." = "सभी पंखों के लिए एक ही तापमान वक्र का उपयोग करें।";
+"Use CPU/GPU load" = "CPU/GPU लोड को ध्यान में रखें";
+"CPU/GPU load can increase the speed required by the temperature curve." = "CPU/GPU लोड तापमान वक्र के अनुसार आवश्यक गति को बढ़ा सकता है।";
+"Fan control status" = "पंखों के नियंत्रण की स्थिति";
+"Temperature sensor" = "तापमान सेंसर";
+"Choose the temperature sensor used by this curve." = "इस वक्र द्वारा उपयोग किया जाने वाला तापमान सेंसर चुनें।";
+"Physical fan" = "भौतिक पंखा";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "इस प्रोफ़ाइल को एक भौतिक पंखा असाइन करें। पंखों का क्रम यह नहीं बताता कि कौन सा पंखा CPU या GPU को ठंडा करता है।";
+"Fan speed" = "पंखे की गति";
+"Enable this curve or return its fans to automatic control." = "इस वक्र को सक्षम करें या इसके पंखों को स्वचालित नियंत्रण पर वापस करें।";
+"Reset fan curve" = "पंखे का वक्र रीसेट करें";
+"Restore the five default points without changing the selected sensor." = "चुने गए सेंसर को बदले बिना पाँच डिफ़ॉल्ट बिंदु बहाल करें।";
+"Unavailable: %0" = "अनुपलब्ध: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "वक्र सक्रिय है";
+"Curve inactive" = "वक्र निष्क्रिय है";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 RPM / लक्ष्य: %2 RPM (%3)";
+"Select an available physical fan to enable this curve." = "इस वक्र को सक्षम करने के लिए उपलब्ध भौतिक पंखा चुनें।";
+"Stop curve" = "वक्र रोकें";
+"Enable curve" = "वक्र सक्षम करें";
+"Fan curve editor" = "पंखे के वक्र का संपादक";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "संपादन के लिए बिंदुओं को खींचें। बिंदु जोड़ने के लिए खाली जगह पर डबल-क्लिक करें; बिंदु हटाने के लिए उस पर डबल-क्लिक करें।";
+"Maximum of 10 points reached. Remove a point before adding another." = "अधिकतम 10 बिंदुओं की सीमा पूरी हो गई है। नया बिंदु जोड़ने से पहले एक बिंदु हटाएँ।";
+"The last point cannot be removed." = "अंतिम बिंदु हटाया नहीं जा सकता।";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "1% और 1 °C के चरणों में 1 से 10 बिंदुओं का उपयोग करें।";
+"%0% at %1 C" = "%1 °C पर %0%";
+"Speed (%)" = "गति (%)";
+"Temperature (C)" = "तापमान (°C)";
+"Curve" = "वक्र";
+"Waiting for fresh temperature data" = "नए तापमान डेटा की प्रतीक्षा है";
+"Waiting for fresh CPU/GPU load" = "नए CPU/GPU लोड डेटा की प्रतीक्षा है";
+"Select physical fans for CPU and GPU" = "CPU और GPU के लिए भौतिक पंखे चुनें";
+"Fan helper unavailable" = "फैन हेल्पर अनुपलब्ध है";
+"Emergency cooling" = "आपातकालीन शीतलन";
+"Fan curve command failed" = "पंखे के वक्र की कमांड विफल हुई";
+"Fan curve paused" = "पंखे का वक्र रुका हुआ है";
+"Fan curve configuration invalid" = "पंखे के वक्र का कॉन्फ़िगरेशन अमान्य है";
+
 // System Stats
 "Authorization" = "प्रमाणीकरण"; // qwen3.8:27b
 "Identificator" = "पहचानकर्ता"; // qwen3.8:27b

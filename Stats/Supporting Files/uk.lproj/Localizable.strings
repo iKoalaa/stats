@@ -549,6 +549,47 @@
 "Teal" = "Бірюзовий";
 "Indigo" = "Індіго";
 
+// Fan curves
+"Open Fans settings" = "Відкрити налаштування вентиляторів";
+"No controllable fans are available on this Mac." = "На цьому Mac немає доступних для керування вентиляторів.";
+"Use one temperature curve for all fans." = "Використовувати одну температурну криву для всіх вентиляторів.";
+"Use CPU/GPU load" = "Враховувати навантаження CPU/GPU";
+"CPU/GPU load can increase the speed required by the temperature curve." = "Навантаження CPU/GPU може підвищити швидкість відносно заданої температурною кривою.";
+"Fan control status" = "Стан керування вентиляторами";
+"Temperature sensor" = "Датчик температури";
+"Choose the temperature sensor used by this curve." = "Виберіть датчик температури для цієї кривої.";
+"Physical fan" = "Фізичний вентилятор";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Призначте фізичний вентилятор цьому профілю. Порядок вентиляторів не вказує, який із них охолоджує CPU або GPU.";
+"Fan speed" = "Швидкість вентилятора";
+"Enable this curve or return its fans to automatic control." = "Увімкніть цю криву або поверніть її вентилятори до автоматичного керування.";
+"Reset fan curve" = "Скинути криву вентилятора";
+"Restore the five default points without changing the selected sensor." = "Відновити п'ять стандартних точок, не змінюючи вибраний датчик.";
+"Unavailable: %0" = "Недоступно: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Крива активна";
+"Curve inactive" = "Крива неактивна";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 об/хв / Ціль: %2 об/хв (%3)";
+"Select an available physical fan to enable this curve." = "Виберіть доступний фізичний вентилятор, щоб увімкнути цю криву.";
+"Stop curve" = "Зупинити криву";
+"Enable curve" = "Увімкнути криву";
+"Fan curve editor" = "Редактор кривої вентилятора";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Перетягуйте точки для редагування. Двічі клацніть порожнє місце, щоб додати точку; двічі клацніть точку, щоб видалити її.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Досягнуто межі у 10 точок. Видаліть точку, перш ніж додавати нову.";
+"The last point cannot be removed." = "Останню точку не можна видалити.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Використовуйте від 1 до 10 точок із кроком 1% і 1 °C.";
+"%0% at %1 C" = "%0% за %1 °C";
+"Speed (%)" = "Швидкість (%)";
+"Temperature (C)" = "Температура (°C)";
+"Curve" = "Крива";
+"Waiting for fresh temperature data" = "Очікування свіжих даних температури";
+"Waiting for fresh CPU/GPU load" = "Очікування свіжих даних навантаження CPU/GPU";
+"Select physical fans for CPU and GPU" = "Виберіть фізичні вентилятори для CPU та GPU";
+"Fan helper unavailable" = "Помічник керування вентиляторами недоступний";
+"Emergency cooling" = "Аварійне охолодження";
+"Fan curve command failed" = "Не вдалося виконати команду кривої вентилятора";
+"Fan curve paused" = "Криву вентилятора призупинено";
+"Fan curve configuration invalid" = "Некоректна конфігурація кривої вентилятора";
+
 // System Stats
 "Authorization" = "Авторизація"; // qwen3.8:27b
 "Identificator" = "Ідентифікатор"; // qwen3.8:27b

@@ -549,6 +549,47 @@
 "Teal" = "ירוק-כחול";
 "Indigo" = "אינדיגו";
 
+// Fan curves
+"Open Fans settings" = "פתיחת הגדרות המאווררים";
+"No controllable fans are available on this Mac." = "אין מאווררים זמינים שניתן לשלוט בהם ב-Mac זה.";
+"Use one temperature curve for all fans." = "שימוש בעקומת טמפרטורה אחת לכל המאווררים.";
+"Use CPU/GPU load" = "התחשבות בעומס CPU/GPU";
+"CPU/GPU load can increase the speed required by the temperature curve." = "עומס CPU/GPU יכול להגדיל את המהירות הנדרשת לפי עקומת הטמפרטורה.";
+"Fan control status" = "מצב בקרת המאווררים";
+"Temperature sensor" = "חיישן טמפרטורה";
+"Choose the temperature sensor used by this curve." = "יש לבחור את חיישן הטמפרטורה המשמש עקומה זו.";
+"Physical fan" = "מאוורר פיזי";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "יש לשייך מאוורר פיזי לפרופיל זה. סדר המאווררים אינו מציין איזה מהם מקרר את ה-CPU או את ה-GPU.";
+"Fan speed" = "מהירות המאוורר";
+"Enable this curve or return its fans to automatic control." = "יש להפעיל עקומה זו או להחזיר את המאווררים שלה לבקרה אוטומטית.";
+"Reset fan curve" = "איפוס עקומת המאוורר";
+"Restore the five default points without changing the selected sensor." = "שחזור חמש נקודות ברירת המחדל בלי לשנות את החיישן שנבחר.";
+"Unavailable: %0" = "לא זמין: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "העקומה פעילה";
+"Curve inactive" = "העקומה אינה פעילה";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 סל״ד / יעד: %2 סל״ד (%3)";
+"Select an available physical fan to enable this curve." = "יש לבחור מאוורר פיזי זמין כדי להפעיל עקומה זו.";
+"Stop curve" = "עצירת העקומה";
+"Enable curve" = "הפעלת העקומה";
+"Fan curve editor" = "עורך עקומת המאוורר";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "יש לגרור נקודות כדי לערוך אותן. לחיצה כפולה על שטח ריק מוסיפה נקודה; לחיצה כפולה על נקודה מסירה אותה.";
+"Maximum of 10 points reached. Remove a point before adding another." = "הגעת למגבלה של 10 נקודות. יש להסיר נקודה לפני הוספת נקודה נוספת.";
+"The last point cannot be removed." = "לא ניתן להסיר את הנקודה האחרונה.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "יש להשתמש ב-1 עד 10 נקודות, בצעדים של 1% ו-1 °C.";
+"%0% at %1 C" = "%0% ב-%1 °C";
+"Speed (%)" = "מהירות (%)";
+"Temperature (C)" = "טמפרטורה (°C)";
+"Curve" = "עקומה";
+"Waiting for fresh temperature data" = "ממתין לנתוני טמפרטורה עדכניים";
+"Waiting for fresh CPU/GPU load" = "ממתין לנתוני עומס CPU/GPU עדכניים";
+"Select physical fans for CPU and GPU" = "יש לבחור מאווררים פיזיים עבור CPU ו-GPU";
+"Fan helper unavailable" = "כלי העזר למאווררים אינו זמין";
+"Emergency cooling" = "קירור חירום";
+"Fan curve command failed" = "הפקודה של עקומת המאוורר נכשלה";
+"Fan curve paused" = "עקומת המאוורר מושהית";
+"Fan curve configuration invalid" = "תצורת עקומת המאוורר אינה תקינה";
+
 // System Stats
 "Authorization" = "הרשאה"; // qwen3.8:27b
 "Identificator" = "מזהה"; // qwen3.8:27b

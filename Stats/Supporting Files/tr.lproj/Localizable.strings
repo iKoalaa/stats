@@ -549,6 +549,47 @@
 "Teal" = "Deniz mavisi";
 "Indigo" = "Çivit mavisi";
 
+// Fan curves
+"Open Fans settings" = "Fan ayarlarını aç";
+"No controllable fans are available on this Mac." = "Bu Mac'te kontrol edilebilir fan bulunmuyor.";
+"Use one temperature curve for all fans." = "Tüm fanlar için tek bir sıcaklık eğrisi kullan.";
+"Use CPU/GPU load" = "CPU/GPU yükünü dikkate al";
+"CPU/GPU load can increase the speed required by the temperature curve." = "CPU/GPU yükü, sıcaklık eğrisinin gerektirdiği hızı artırabilir.";
+"Fan control status" = "Fan kontrol durumu";
+"Temperature sensor" = "Sıcaklık sensörü";
+"Choose the temperature sensor used by this curve." = "Bu eğrinin kullanacağı sıcaklık sensörünü seçin.";
+"Physical fan" = "Fiziksel fan";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Bu profile fiziksel bir fan atayın. Fan sırası, hangi fanın CPU veya GPU'yu soğuttuğunu göstermez.";
+"Fan speed" = "Fan hızı";
+"Enable this curve or return its fans to automatic control." = "Bu eğriyi etkinleştirin veya fanlarını otomatik kontrole geri döndürün.";
+"Reset fan curve" = "Fan eğrisini sıfırla";
+"Restore the five default points without changing the selected sensor." = "Seçili sensörü değiştirmeden beş varsayılan noktayı geri yükle.";
+"Unavailable: %0" = "Kullanılamıyor: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Eğri etkin";
+"Curve inactive" = "Eğri etkin değil";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 dev/dk / Hedef: %2 dev/dk (%3)";
+"Select an available physical fan to enable this curve." = "Bu eğriyi etkinleştirmek için kullanılabilir bir fiziksel fan seçin.";
+"Stop curve" = "Eğriyi durdur";
+"Enable curve" = "Eğriyi etkinleştir";
+"Fan curve editor" = "Fan eğrisi düzenleyicisi";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Düzenlemek için noktaları sürükleyin. Nokta eklemek için boş alana çift tıklayın; bir noktayı kaldırmak için o noktaya çift tıklayın.";
+"Maximum of 10 points reached. Remove a point before adding another." = "En fazla 10 nokta sınırına ulaşıldı. Yeni bir nokta eklemeden önce bir noktayı kaldırın.";
+"The last point cannot be removed." = "Son nokta kaldırılamaz.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "1% ve 1 °C adımlarla 1 ile 10 arasında nokta kullanın.";
+"%0% at %1 C" = "%1 °C'de %0%";
+"Speed (%)" = "Hız (%)";
+"Temperature (C)" = "Sıcaklık (°C)";
+"Curve" = "Eğri";
+"Waiting for fresh temperature data" = "Güncel sıcaklık verileri bekleniyor";
+"Waiting for fresh CPU/GPU load" = "Güncel CPU/GPU yük verileri bekleniyor";
+"Select physical fans for CPU and GPU" = "CPU ve GPU için fiziksel fanları seçin";
+"Fan helper unavailable" = "Fan yardımcısı kullanılamıyor";
+"Emergency cooling" = "Acil soğutma";
+"Fan curve command failed" = "Fan eğrisi komutu başarısız oldu";
+"Fan curve paused" = "Fan eğrisi duraklatıldı";
+"Fan curve configuration invalid" = "Fan eğrisi yapılandırması geçersiz";
+
 // System Stats
 "Authorization" = "Yetkilendirme"; // qwen3.8:27b
 "Identificator" = "Kimlik"; // qwen3.8:27b

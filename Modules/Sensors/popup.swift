@@ -64,6 +64,9 @@ internal class Popup: PopupWrapper {
     
     #if arch(arm64)
     @objc private func checkFanModesAndResetFtst() {
+        let controller = FanCurveController.shared
+        guard controller.activeFans.isEmpty,
+              !controller.fans.contains(where: { controller.isCurveEnabled(for: $0.id) }) else { return }
         let fanViews = self.list.values.compactMap { $0 as? FanView }
         guard !fanViews.isEmpty else { return }
         guard fanViews.allSatisfy({ $0.fan.mode.isAutomatic }) else { return }
@@ -450,6 +453,7 @@ internal class FanView: NSStackView {
     private var slider: NSSlider? = nil
     private var modeButtons: ModeButtons? = nil
     private var debouncer: DispatchWorkItem? = nil
+    private var curveSelected: Bool = false
     
     private var barView: BarChartView = BarChartView(size: 6, horizontal: true)
     
@@ -510,8 +514,12 @@ internal class FanView: NSStackView {
         NotificationCenter.default.addObserver(self, selector: #selector(self.changeHelperState), name: .fanHelperState, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.controlCallback), name: .toggleFanControl, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.recheckHelperState), name: NSApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateCurveMode), name: Notification.Name("FanCurveUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateCurveMode), name: Notification.Name("FanCurveChanged"), object: nil)
+        self.updateCurveMode()
         
-        if let fanMode = self.fan.customMode, self.speedState && fanMode != FanMode.automatic {
+        if !FanCurveController.shared.isCurveEnabled(for: fan.id),
+           let fanMode = self.fan.customMode, self.speedState && fanMode != FanMode.automatic {
             SMCHelper.shared.setFanMode(fan.id, mode: fanMode.rawValue)
             self.modeButtons?.setMode(FanMode(rawValue: fanMode.rawValue) ?? .automatic)
             
@@ -528,12 +536,15 @@ internal class FanView: NSStackView {
     }
     
     deinit {
+        self.debouncer?.cancel()
         self.approvalPollTimer?.invalidate()
         NSWorkspace.shared.notificationCenter.removeObserver(self)
         NotificationCenter.default.removeObserver(self, name: .syncFansControl, object: nil)
         NotificationCenter.default.removeObserver(self, name: .fanHelperState, object: nil)
         NotificationCenter.default.removeObserver(self, name: .toggleFanControl, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("FanCurveUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("FanCurveChanged"), object: nil)
     }
     
     private func nameAndSpeed() {
@@ -603,7 +614,7 @@ internal class FanView: NSStackView {
     }
     
     private func mode() -> NSView {
-        let view: NSView = NSView(frame: NSRect(x: 0, y: 0, width: self.frame.width, height: 44))
+        let view: NSView = NSView(frame: NSRect(x: 0, y: 0, width: self.frame.width, height: 64))
         view.heightAnchor.constraint(equalToConstant: view.bounds.height).isActive = true
         
         let buttons = ModeButtons(frame: NSRect(
@@ -613,42 +624,94 @@ internal class FanView: NSStackView {
             height: view.frame.height - 8
         ), mode: self.fan.mode)
         buttons.callback = { [weak self] (mode: FanMode) in
-            if let fan = self?.fan, mode == .automatic || fan.mode != mode {
-                self?.fan.mode = mode
-                self?.fan.customMode = mode
-                SMCHelper.shared.setFanMode(fan.id, mode: mode.rawValue)
+            guard let self else { return }
+            let wasCurve = self.stopCurveForLegacyControl()
+            if wasCurve || mode == .automatic || self.fan.mode != mode {
+                self.fan.mode = mode
+                self.fan.customMode = mode
+                SMCHelper.shared.setFanMode(self.fan.id, mode: mode.rawValue)
             }
-            self?.toggleControlView(mode == .forced)
+            self.toggleControlView(mode == .forced)
+        }
+        buttons.curve = { [weak self] in
+            guard let self else { return }
+            self.debouncer?.cancel()
+            self.debouncer = nil
+            let controller = FanCurveController.shared
+            if !controller.isCurveEnabled(for: self.fan.id) {
+                controller.enableCurve(for: self.fan.id)
+            }
+            self.updateCurveMode()
+            if !controller.isCurveEnabled(for: self.fan.id) {
+                self.modeButtons?.updateCurveMode(false, mode: self.fan.mode)
+            }
         }
         buttons.off = { [weak self] in
-            if let fan = self?.fan {
-                if self?.fan.mode != .forced {
-                    self?.fan.mode = .forced
-                    SMCHelper.shared.setFanMode(fan.id, mode: FanMode.forced.rawValue)
-                }
-                self?.fan.customMode = .forced
-                SMCHelper.shared.setFanSpeed(fan.id, speed: 0)
-                self?.fan.customSpeed = 0
+            guard let self else { return }
+            let wasCurve = self.stopCurveForLegacyControl()
+            if wasCurve || self.fan.mode != .forced {
+                self.fan.mode = .forced
+                SMCHelper.shared.setFanMode(self.fan.id, mode: FanMode.forced.rawValue)
             }
-            self?.toggleControlView(false)
+            self.fan.customMode = .forced
+            SMCHelper.shared.setFanSpeed(self.fan.id, speed: 0)
+            self.fan.customSpeed = 0
+            self.toggleControlView(false)
         }
         buttons.turbo = { [weak self] in
-            if let fan = self?.fan {
-                if self?.fan.mode != .forced {
-                    self?.fan.mode = .forced
-                    SMCHelper.shared.setFanMode(fan.id, mode: FanMode.forced.rawValue)
-                }
-                self?.fan.customMode = .forced
-                SMCHelper.shared.setFanSpeed(fan.id, speed: Int(fan.maxSpeed))
-                self?.fan.customSpeed = Int(fan.maxSpeed)
+            guard let self else { return }
+            let wasCurve = self.stopCurveForLegacyControl()
+            if wasCurve || self.fan.mode != .forced {
+                self.fan.mode = .forced
+                SMCHelper.shared.setFanMode(self.fan.id, mode: FanMode.forced.rawValue)
             }
-            self?.toggleControlView(false)
+            self.fan.customMode = .forced
+            SMCHelper.shared.setFanSpeed(self.fan.id, speed: Int(self.fan.maxSpeed))
+            self.fan.customSpeed = Int(self.fan.maxSpeed)
+            self.toggleControlView(false)
         }
         
         view.addSubview(buttons)
         self.modeButtons = buttons
         
         return view
+    }
+
+    private func stopCurveForLegacyControl() -> Bool {
+        self.debouncer?.cancel()
+        self.debouncer = nil
+        let controller = FanCurveController.shared
+        let wasCurve = controller.isCurveEnabled(for: self.fan.id) || controller.activeFans.contains(self.fan.id)
+        let sharedCurve = controller.synchronized && (!controller.activeFans.isEmpty ||
+            controller.fans.contains(where: { controller.isCurveEnabled(for: $0.id) }))
+        if wasCurve || sharedCurve {
+            controller.stopCurve(for: self.fan.id)
+        }
+        return wasCurve
+    }
+
+    @objc private func updateCurveMode() {
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { [weak self] in self?.updateCurveMode() }
+            return
+        }
+        let enabled = FanCurveController.shared.isCurveEnabled(for: self.fan.id)
+        if enabled {
+            self.debouncer?.cancel()
+            self.debouncer = nil
+            self.resetModeAfterSleep = false
+            self.willSleepMode = nil
+            self.willSleepSpeed = nil
+            self.fan.mode = .forced
+            self.modeButtons?.updateCurveMode(true)
+        } else if self.curveSelected {
+            self.fan.mode = .automatic
+            self.modeButtons?.updateCurveMode(false, mode: .automatic)
+        }
+        if enabled != self.curveSelected {
+            self.curveSelected = enabled
+            self.toggleControlView(false)
+        }
     }
     
     private func control() -> NSView {
@@ -736,7 +799,7 @@ internal class FanView: NSStackView {
             return
         }
         
-        if state {
+        if state && self.controlState && self.helperInstalled && !FanCurveController.shared.isCurveEnabled(for: self.fan.id) {
             self.slider?.doubleValue = self.speed
             if self.speedState {
                 self.setSpeed(value: Int(self.speed), then: {
@@ -760,19 +823,18 @@ internal class FanView: NSStackView {
     }
     
     private func setSpeed(value: Int, then: @escaping () -> Void = {}) {
+        self.debouncer?.cancel()
+        self.debouncer = nil
+        guard !FanCurveController.shared.isCurveEnabled(for: self.fan.id) else { return }
         self.sliderValueField?.stringValue = "\(value) RPM"
         self.sliderValueField?.textColor = .secondaryLabelColor
         self.fan.customSpeed = value
         
-        self.debouncer?.cancel()
-        
         let task = DispatchWorkItem { [weak self] in
-            DispatchQueue.global(qos: .userInteractive).async { [weak self] in
-                if let id = self?.fan.id {
-                    SMCHelper.shared.setFanSpeed(id, speed: value)
-                }
-                then()
-            }
+            // Check ownership on main immediately before submitting a legacy command.
+            guard let self, !FanCurveController.shared.isCurveEnabled(for: self.fan.id) else { return }
+            SMCHelper.shared.setFanSpeed(self.fan.id, speed: value)
+            then()
         }
         
         self.debouncer = task
@@ -780,6 +842,9 @@ internal class FanView: NSStackView {
     }
     
     @objc private func sliderCallback(_ sender: NSSlider) {
+        if self.stopCurveForLegacyControl() {
+            self.modeButtons?.setMode(.forced)
+        }
         var value = sender.doubleValue
         if value > self.fan.maxSpeed {
             value = self.fan.maxSpeed
@@ -808,6 +873,9 @@ internal class FanView: NSStackView {
     }
     
     @objc func setMin() {
+        if self.stopCurveForLegacyControl() {
+            self.modeButtons?.setMode(.forced)
+        }
         self.slider?.doubleValue = self.fan.minSpeed
         self.maxBtn?.state = .off
         self.setSpeed(value: Int(self.fan.minSpeed))
@@ -815,6 +883,9 @@ internal class FanView: NSStackView {
     }
     
     @objc func setMax() {
+        if self.stopCurveForLegacyControl() {
+            self.modeButtons?.setMode(.forced)
+        }
         self.slider?.doubleValue = self.fan.maxSpeed
         self.minBtn?.state = .off
         self.setSpeed(value: Int(self.fan.maxSpeed))
@@ -822,12 +893,18 @@ internal class FanView: NSStackView {
     }
     
     @objc private func wakeListener() {
+        self.debouncer?.cancel()
+        self.debouncer = nil
+        if FanCurveController.shared.isCurveEnabled(for: self.fan.id) {
+            self.updateCurveMode()
+            return
+        }
         self.resetModeAfterSleep = true
         
         if self.speedState {
             if let mode = self.willSleepMode, let speed = self.willSleepSpeed {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-                    guard let self else { return }
+                    guard let self, !FanCurveController.shared.isCurveEnabled(for: self.fan.id) else { return }
                     SMCHelper.shared.setFanMode(self.fan.id, mode: mode.rawValue)
                     self.modeButtons?.setMode(mode)
                     if !mode.isAutomatic {
@@ -853,6 +930,12 @@ internal class FanView: NSStackView {
     }
     
     @objc private func sleepListener() {
+        self.debouncer?.cancel()
+        self.debouncer = nil
+        if FanCurveController.shared.isCurveEnabled(for: self.fan.id) {
+            self.updateCurveMode()
+            return
+        }
         guard SMCHelper.shared.isActive(), let mode = self.fan.customMode, !mode.isAutomatic else { return }
         
         self.willSleepMode = mode
@@ -862,7 +945,9 @@ internal class FanView: NSStackView {
     }
     
     @objc private func syncFanSpeed(_ notification: Notification) {
-        guard self.syncState else { return }
+        guard self.syncState,
+              !FanCurveController.shared.isCurveEnabled(for: self.fan.id),
+              !FanCurveController.shared.activeFans.contains(self.fan.id) else { return }
         var speed = notification.userInfo?["speed"] as? Int
         if let percentage = notification.userInfo?["percentage"] as? Int {
             speed = ((Int(self.fan.maxSpeed - self.fan.minSpeed)*percentage)/100) + Int(self.fan.minSpeed)
@@ -898,7 +983,7 @@ internal class FanView: NSStackView {
                 let percentage = value.percentage < 0 ? 0 : value.percentage
                 self.barView.setValue(ColorValue(Double(percentage) / 100))
                 
-                if self.resetModeAfterSleep && !value.mode.isAutomatic {
+                if self.resetModeAfterSleep && !value.mode.isAutomatic && !FanCurveController.shared.isCurveEnabled(for: self.fan.id) {
                     if self.sliderValueField?.stringValue != "" && self.slider?.doubleValue != value.value {
                         self.slider?.doubleValue = value.value
                         self.sliderValueField?.stringValue = ""
@@ -995,7 +1080,7 @@ internal class FanView: NSStackView {
                 if self.fan.maxSpeed != self.fan.minSpeed, let v = self.buttonsView {
                     self.addArrangedSubview(v)
                 }
-                if self.fan.mode == .forced, let v = self.controlView {
+                if self.fan.mode == .forced, !FanCurveController.shared.isCurveEnabled(for: self.fan.id), let v = self.controlView {
                     self.addArrangedSubview(v)
                 }
             } else {
@@ -1031,6 +1116,7 @@ internal class FanView: NSStackView {
 
 private class ModeButtons: NSStackView {
     public var callback: (FanMode) -> Void = {_ in }
+    public var curve: () -> Void = {}
     public var turbo: () -> Void = {}
     public var off: () -> Void = {}
     
@@ -1049,30 +1135,36 @@ private class ModeButtons: NSStackView {
         
         super.init(frame: frame)
         
-        self.orientation = .horizontal
-        self.alignment = .centerY
-        self.distribution = .fillProportionally
-        self.spacing = 0
+        self.orientation = .vertical
+        self.alignment = .trailing
+        self.distribution = .fill
+        self.spacing = 4
         self.wantsLayer = true
         self.layer?.cornerRadius = Constants.Popup.radius
         self.edgeInsets = .init(top: 0, left: Constants.Popup.margins/2, bottom: 0, right: Constants.Popup.margins/2)
         
         self.modes.autoCallback = { [weak self] in
             if let self {
+                self.callback(.automatic)
+                self.modes.change(auto: true)
                 self.offBtn.state = .off
                 self.turboBtn.state = .off
-                self.callback(.automatic)
             }
             NotificationCenter.default.post(name: .syncFansControl, object: nil, userInfo: ["mode": "automatic"])
             NotificationCenter.default.post(name: .checkFanModes, object: nil)
         }
         self.modes.manualCallback = { [weak self] in
             if let self {
+                self.callback(.forced)
+                self.modes.change(manual: true)
                 self.offBtn.state = .off
                 self.turboBtn.state = .off
-                self.callback(.forced)
             }
             NotificationCenter.default.post(name: .syncFansControl, object: nil, userInfo: ["mode": "forced"])
+        }
+        self.modes.curveCallback = { [weak self] in
+            self?.curve()
+            NotificationCenter.default.post(name: .syncFansControl, object: nil, userInfo: ["mode": "curve"])
         }
         
         self.offBtn.setButtonType(.toggle)
@@ -1083,16 +1175,23 @@ private class ModeButtons: NSStackView {
         self.turboBtn.isBordered = false
         self.turboBtn.target = self
         
-        self.addArrangedSubview(modes)
-        self.addArrangedSubview(self.offBtn)
-        self.addArrangedSubview(self.turboBtn)
+        let extraButtons = NSStackView(views: [NSView(), self.offBtn, self.turboBtn])
+        extraButtons.orientation = .horizontal
+        extraButtons.alignment = .centerY
+        extraButtons.distribution = .fill
+        extraButtons.spacing = 0
+        self.addArrangedSubview(self.modes)
+        self.addArrangedSubview(extraButtons)
         
         NSLayoutConstraint.activate([
-            self.modes.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -Constants.Popup.margins),
+            self.modes.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -Constants.Popup.margins),
+            self.modes.heightAnchor.constraint(equalToConstant: 26),
+            extraButtons.widthAnchor.constraint(equalTo: self.modes.widthAnchor),
+            extraButtons.heightAnchor.constraint(equalToConstant: 26),
             self.offBtn.widthAnchor.constraint(equalToConstant: 26),
-            self.offBtn.heightAnchor.constraint(equalToConstant: self.frame.height),
+            self.offBtn.heightAnchor.constraint(equalToConstant: 26),
             self.turboBtn.widthAnchor.constraint(equalToConstant: 26),
-            self.turboBtn.heightAnchor.constraint(equalToConstant: self.frame.height)
+            self.turboBtn.heightAnchor.constraint(equalToConstant: 26)
         ])
         
         NotificationCenter.default.addObserver(self, selector: #selector(syncFanMode), name: .syncFansControl, object: nil)
@@ -1138,10 +1237,10 @@ private class ModeButtons: NSStackView {
     }
     
     private func toggleOffMode(_ sender: NSButton) {
+        self.off()
         self.modes.change()
         self.offBtn.state = .on
         self.turboBtn.state = .off
-        self.off()
         
         if sender.tag != 4 {
             NotificationCenter.default.post(name: .syncFansControl, object: nil, userInfo: ["mode": "off"])
@@ -1154,10 +1253,10 @@ private class ModeButtons: NSStackView {
             return
         }
         
+        self.turbo()
         self.modes.change()
         self.offBtn.state = .off
         self.turboBtn.state = .on
-        self.turbo()
         
         if sender.tag != 4 {
             NotificationCenter.default.post(name: .syncFansControl, object: nil, userInfo: ["mode": "turbo"])
@@ -1173,6 +1272,8 @@ private class ModeButtons: NSStackView {
             self.setMode(.automatic)
         } else if mode == "forced" {
             self.setMode(.forced)
+        } else if mode == "curve" {
+            self.curve()
         } else if mode == "off" {
             let btn = NSButton()
             btn.state = .on
@@ -1188,22 +1289,29 @@ private class ModeButtons: NSStackView {
     
     public func setMode(_ mode: FanMode) {
         if mode.isAutomatic {
+            self.callback(.automatic)
             self.modes.change(auto: true)
             self.offBtn.state = .off
             self.turboBtn.state = .off
-            self.callback(.automatic)
         } else if mode == .forced {
+            self.callback(.forced)
             self.modes.change(manual: true)
             self.offBtn.state = .off
             self.turboBtn.state = .off
-            self.callback(.forced)
         }
+    }
+
+    public func updateCurveMode(_ enabled: Bool, mode: FanMode = .automatic) {
+        self.modes.change(auto: !enabled && mode.isAutomatic, manual: !enabled && mode == .forced, curve: enabled)
+        self.offBtn.state = .off
+        self.turboBtn.state = .off
     }
 }
 
 private class ModeSwitch: NSStackView {
     public var autoCallback: (() -> Void)?
     public var manualCallback: (() -> Void)?
+    public var curveCallback: (() -> Void)?
     
     private var autoBtn: NSButton = {
         let button: NSButton = NSButton(title: localizedString("Automatic"), target: nil, action: #selector(autoMode))
@@ -1232,6 +1340,20 @@ private class ModeSwitch: NSStackView {
         ])
         return button
     }()
+
+    private var curveBtn: NSButton = {
+        let button = NSButton(title: localizedString("Curve"), target: nil, action: #selector(curveMode))
+        button.setButtonType(.toggle)
+        button.isBordered = false
+        button.wantsLayer = true
+        button.layer?.cornerRadius = Constants.Popup.radius
+        button.layer?.backgroundColor = NSColor.clear.cgColor
+        button.attributedTitle = NSAttributedString(string: localizedString("Curve"), attributes: [
+            .foregroundColor: NSColor.secondaryLabelColor,
+            .font: NSFont.systemFont(ofSize: 11, weight: .semibold)
+        ])
+        return button
+    }()
     
     private var selectedColor: CGColor {
         (isDarkMode ? NSColor(red: 95/255, green: 95/255, blue: 95/255, alpha: 1) : .textBackgroundColor).cgColor
@@ -1242,7 +1364,7 @@ private class ModeSwitch: NSStackView {
         
         self.orientation = .horizontal
         self.alignment = .centerY
-        self.distribution = .fillEqually
+        self.distribution = .fillProportionally
         self.wantsLayer = true
         self.layer?.cornerRadius = Constants.Popup.radius
         self.spacing = 0
@@ -1255,13 +1377,20 @@ private class ModeSwitch: NSStackView {
         self.manualBtn.target = self
         self.manualBtn.state = mode == .forced ? .on : .off
         self.manualBtn.layer?.backgroundColor = mode == .forced ? self.selectedColor : NSColor.clear.cgColor
+        self.curveBtn.target = self
+        self.curveBtn.state = .off
         
         self.addArrangedSubview(self.autoBtn)
         self.addArrangedSubview(self.manualBtn)
+        self.addArrangedSubview(self.curveBtn)
         
         NSLayoutConstraint.activate([
             self.autoBtn.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -4),
-            self.manualBtn.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -4)
+            self.manualBtn.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -4),
+            self.curveBtn.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -4),
+            self.autoBtn.widthAnchor.constraint(greaterThanOrEqualToConstant: self.autoBtn.attributedTitle.size().width + 12),
+            self.manualBtn.widthAnchor.constraint(greaterThanOrEqualToConstant: self.manualBtn.attributedTitle.size().width + 12),
+            self.curveBtn.widthAnchor.constraint(greaterThanOrEqualToConstant: self.curveBtn.attributedTitle.size().width + 12)
         ])
     }
     
@@ -1273,33 +1402,31 @@ private class ModeSwitch: NSStackView {
         self.layer?.backgroundColor = (isDarkMode ? NSColor(red: 17/255, green: 17/255, blue: 17/255, alpha: 0.25) : NSColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1)).cgColor
         self.autoBtn.layer?.backgroundColor = self.autoBtn.state == .on ? self.selectedColor : NSColor.clear.cgColor
         self.manualBtn.layer?.backgroundColor = self.manualBtn.state == .on ? self.selectedColor : NSColor.clear.cgColor
+        self.curveBtn.layer?.backgroundColor = self.curveBtn.state == .on ? self.selectedColor : NSColor.clear.cgColor
     }
     
-    public func change(auto: Bool = false, manual: Bool = false) {
+    public func change(auto: Bool = false, manual: Bool = false, curve: Bool = false) {
         self.autoBtn.state = auto ? .on : .off
         self.manualBtn.state = manual ? .on : .off
+        self.curveBtn.state = curve ? .on : .off
         
         self.autoBtn.layer?.backgroundColor = auto ? self.selectedColor : NSColor.clear.cgColor
         self.manualBtn.layer?.backgroundColor = manual ? self.selectedColor : NSColor.clear.cgColor
+        self.curveBtn.layer?.backgroundColor = curve ? self.selectedColor : NSColor.clear.cgColor
     }
     
     @objc private func autoMode() {
-        self.autoBtn.state = .on
-        self.manualBtn.state = .off
-        
-        self.autoBtn.layer?.backgroundColor = self.selectedColor
-        self.manualBtn.layer?.backgroundColor = NSColor.clear.cgColor
-        
+        self.change(auto: true)
         self.autoCallback?()
     }
     
     @objc private func manualMode() {
-        self.autoBtn.state = .off
-        self.manualBtn.state = .on
-        
-        self.autoBtn.layer?.backgroundColor = NSColor.clear.cgColor
-        self.manualBtn.layer?.backgroundColor = self.selectedColor
-        
+        self.change(manual: true)
         self.manualCallback?()
+    }
+
+    @objc private func curveMode() {
+        self.change(curve: true)
+        self.curveCallback?()
     }
 }

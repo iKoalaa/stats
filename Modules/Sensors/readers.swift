@@ -14,6 +14,17 @@ import Kit
 
 internal class SensorsReader: Reader<Sensors_List> {
     static let HIDtypes: [SensorType] = [.temperature, .voltage]
+
+    struct FanControlSample {
+        let fans: [FanCurveFan]
+        let sensors: [FanCurveSensor]
+        let hotTemperature: Double?
+        let timestamp: TimeInterval
+    }
+    var fanControlSampleHandler: ((FanControlSample) -> Void)?
+    private let readLock = NSLock()
+    private var hasCPUThermalSource = false
+    private var hasGPUThermalSource = false
     
     internal var list: Sensors_List = Sensors_List()
     
@@ -49,7 +60,9 @@ internal class SensorsReader: Reader<Sensors_List> {
     }
     
     public override func stop() {
+        guard !self.controlDemand else { return }
         super.stop()
+        guard !self.active else { return }
         self.resetHIDSensors()
     }
     
@@ -58,6 +71,8 @@ internal class SensorsReader: Reader<Sensors_List> {
     }
     
     @objc private func resetHIDSensors() {
+        self.readLock.lock()
+        defer { self.readLock.unlock() }
         AppleSiliconSensorsReset()
     }
     
@@ -119,16 +134,16 @@ internal class SensorsReader: Reader<Sensors_List> {
         for sensor in list {
             if let newValue = SMC.shared.getValue(sensor.key) {
                 if let idx = list.firstIndex(where: { $0.key == sensor.key }) {
-                    list[idx].value = newValue
+                    list[idx].value = newValue.isFinite ? newValue : 0
                 }
             }
         }
         
         var results: [Sensor_p] = []
+        self.hasCPUThermalSource = self.hasCPUThermalSource || list.contains { $0.type == .temperature && $0.group == .CPU }
+        self.hasGPUThermalSource = self.hasGPUThermalSource || list.contains { $0.type == .temperature && $0.group == .GPU }
         results += list.filter({ (s: Sensor_p) -> Bool in
-            if s.type == .temperature && (s.value == 0 || s.value > 110) {
-                return false
-            } else if s.type == .current && s.value > 100 {
+            if s.type == .current && s.value > 100 {
                 return false
             }
             return true
@@ -146,22 +161,41 @@ internal class SensorsReader: Reader<Sensors_List> {
     }
     
     public override func read() {
+        guard self.readLock.try() else { return }
+        defer { self.readLock.unlock() }
+        let timestamp = ProcessInfo.processInfo.systemUptime
         var sensors = self.list.sensors
+        var freshTemperatures: [String: Double] = [:]
+        var freshFans: [FanCurveFan] = []
         
         for i in sensors.indices {
             guard sensors[i].group != .hid && !sensors[i].isComputed else { continue }
-            if !self.unknownSensorsState && sensors[i].group == .unknown { continue }
+            if !self.unknownSensorsState && sensors[i].group == .unknown && sensors[i].type != .temperature { continue }
             
-            var newValue = SMC.shared.getValue(sensors[i].key) ?? 0
+            let rawValue = SMC.shared.getValue(sensors[i].key, includeZero: sensors[i].type == .fan)
+            var newValue = rawValue ?? 0
             if sensors[i].type == .temperature && sensors[i].group == .CPU &&
-                (newValue < 10 || newValue > 120) { // fix for m2 broken sensors
+                (!newValue.isFinite || newValue < 10 || newValue > 150) { // fix for m2 broken sensors, not a fresh measurement
                 newValue = sensors[i].value
+            } else if sensors[i].type == .temperature, let value = rawValue,
+                      value.isFinite, value > 0, value <= 150 {
+                freshTemperatures[sensors[i].key] = value
             }
-            sensors[i].value = newValue
+            sensors[i].value = newValue.isFinite ? newValue : 0
+            if var fan = sensors[i] as? Fan, !fan.isComputed {
+                let minimum = SMC.shared.getValue("F\(fan.id)Mn", includeZero: true)
+                let maximum = SMC.shared.getValue("F\(fan.id)Mx", includeZero: true)
+                if let minimum, let maximum, let rpm = rawValue,
+                   minimum.isFinite, maximum.isFinite, rpm.isFinite,
+                   minimum >= 0, minimum != 1, maximum > 1, maximum > minimum, rpm >= 0 {
+                    fan.minSpeed = minimum
+                    fan.maxSpeed = maximum
+                    sensors[i] = fan
+                    freshFans.append(FanCurveFan(id: fan.id, name: fan.name, minRPM: minimum, maxRPM: maximum, rpm: rpm))
+                }
+            }
         }
         
-        var cpuSensors = sensors.filter({ $0.group == .CPU && $0.type == .temperature && $0.average }).map{ $0.value }
-        var gpuSensors = sensors.filter({ $0.group == .GPU && $0.type == .temperature && $0.average }).map{ $0.value }
         let fanSensors = sensors.filter({ $0.type == .fan && !$0.isComputed })
         
         #if arch(arm64)
@@ -169,27 +203,15 @@ internal class SensorsReader: Reader<Sensors_List> {
             for typ in SensorsReader.HIDtypes {
                 let (page, usage, type) = self.m1Preset(type: typ)
                 AppleSiliconSensors(page, usage, type).forEach { (key, value) in
-                    guard let key = key as? String, let value = value as? Double, value < 300 && value >= 0 else {
+                    guard let key = key as? String, let value = value as? Double, value.isFinite, value < 300 && value >= 0 else {
                         return
                     }
                     
                     if let idx = sensors.firstIndex(where: { $0.group == .hid && $0.key == key }) {
                         sensors[idx].value = value
-                    }
-                }
-            }
-            
-            cpuSensors += sensors.filter({ $0.key.hasPrefix("pACC MTR Temp") || $0.key.hasPrefix("eACC MTR Temp") }).map{ $0.value }
-            gpuSensors += sensors.filter({ $0.key.hasPrefix("GPU MTR Temp") }).map{ $0.value }
-            
-            let socSensors = sensors.filter({ $0.key.hasPrefix("SOC MTR Temp") }).map{ $0.value }
-            if !socSensors.isEmpty {
-                if let idx = sensors.firstIndex(where: { $0.key == "Average SOC" }) {
-                    sensors[idx].value = socSensors.reduce(0, +) / Double(socSensors.count)
-                }
-                if let max = socSensors.max() {
-                    if let idx = sensors.firstIndex(where: { $0.key == "Hottest SOC" }) {
-                        sensors[idx].value = max
+                        if typ == .temperature, value > 0, value <= 150 {
+                            freshTemperatures[key] = value
+                        }
                     }
                 }
             }
@@ -214,26 +236,36 @@ internal class SensorsReader: Reader<Sensors_List> {
         }
         #endif
         
-        if !cpuSensors.isEmpty {
-            if let idx = sensors.firstIndex(where: { $0.key == "Average CPU" }) {
-                sensors[idx].value = cpuSensors.reduce(0, +) / Double(cpuSensors.count)
-            }
-            if let max = cpuSensors.max() {
-                if let idx = sensors.firstIndex(where: { $0.key == "Hottest CPU" }) {
-                    sensors[idx].value = max
-                }
-            }
+        let cpuSources = sensors.filter {
+            $0.type == .temperature && !$0.isComputed && ($0.group == .CPU ||
+                $0.key.hasPrefix("pACC MTR Temp") || $0.key.hasPrefix("eACC MTR Temp"))
         }
-        if !gpuSensors.isEmpty {
-            if let idx = sensors.firstIndex(where: { $0.key == "Average GPU" }) {
-                sensors[idx].value = gpuSensors.reduce(0, +) / Double(gpuSensors.count)
-            }
-            if let max = gpuSensors.max() {
-                if let idx = sensors.firstIndex(where: { $0.key == "Hottest GPU" }) {
-                    sensors[idx].value = max
-                }
-            }
+        let gpuSources = sensors.filter {
+            $0.type == .temperature && !$0.isComputed && ($0.group == .GPU || $0.key.hasPrefix("GPU MTR Temp"))
         }
+        self.hasCPUThermalSource = self.hasCPUThermalSource || !cpuSources.isEmpty
+        self.hasGPUThermalSource = self.hasGPUThermalSource || !gpuSources.isEmpty
+        let cpuTemperatures = cpuSources.compactMap { freshTemperatures[$0.key] }
+        let gpuTemperatures = gpuSources.compactMap { freshTemperatures[$0.key] }
+        let cpuAverage = cpuSources.filter { $0.average || $0.group == .hid }.compactMap { freshTemperatures[$0.key] }
+        let gpuAverage = gpuSources.filter { $0.average || $0.group == .hid }.compactMap { freshTemperatures[$0.key] }
+        let socTemperatures = sensors.filter { $0.key.hasPrefix("SOC MTR Temp") }.compactMap { freshTemperatures[$0.key] }
+        for (group, averageInputs, hottestInputs) in [
+            ("CPU", cpuAverage, cpuTemperatures), ("GPU", gpuAverage, gpuTemperatures),
+            ("SOC", socTemperatures, socTemperatures)
+        ] {
+            if !averageInputs.isEmpty {
+                freshTemperatures["Average \(group)"] = averageInputs.reduce(0, +) / Double(averageInputs.count)
+            }
+            freshTemperatures["Hottest \(group)"] = hottestInputs.max()
+        }
+        for i in sensors.indices where sensors[i].type == .temperature &&
+            (sensors[i].isComputed || sensors[i].key == "Average SOC" || sensors[i].key == "Hottest SOC") {
+            sensors[i].value = freshTemperatures[sensors[i].key] ?? 0
+        }
+        let missingThermalGroup = (self.hasCPUThermalSource && cpuTemperatures.isEmpty) ||
+            (self.hasGPUThermalSource && gpuTemperatures.isEmpty)
+        let hotTemperature = missingThermalGroup ? nil : (cpuTemperatures + gpuTemperatures).max()
         if !fanSensors.isEmpty && fanSensors.count > 1 {
             if let f = fanSensors.max(by: { $0.value < $1.value }) as? Fan {
                 if let idx = sensors.firstIndex(where: { $0.key == "Fastest fan" }) {
@@ -282,37 +314,43 @@ internal class SensorsReader: Reader<Sensors_List> {
             return list
         }
         
+        let sample = FanControlSample(
+            fans: freshFans,
+            sensors: sensors.filter { $0.type == .temperature }.map {
+                FanCurveSensor(key: $0.key, name: $0.name, value: freshTemperatures[$0.key])
+            },
+            hotTemperature: hotTemperature,
+            timestamp: timestamp
+        )
+        self.fanControlSampleHandler?(sample)
         self.callback(self.list)
     }
     
     private func initCalculatedSensors(_ sensors: [Sensor_p]) -> [Sensor_p] {
         var list: [Sensor_p] = []
         
-        var cpuSensors = sensors.filter({ $0.group == .CPU && $0.type == .temperature && $0.average }).map{ $0.value }
-        var gpuSensors = sensors.filter({ $0.group == .GPU && $0.type == .temperature && $0.average }).map{ $0.value }
-        
-        #if arch(arm64)
-        if self.HIDState {
-            cpuSensors += sensors.filter({ $0.key.hasPrefix("pACC MTR Temp") || $0.key.hasPrefix("eACC MTR Temp") }).map{ $0.value }
-            gpuSensors += sensors.filter({ $0.key.hasPrefix("GPU MTR Temp") }).map{ $0.value }
-        }
-        #endif
+        let cpuSources = sensors.filter { $0.type == .temperature && !$0.isComputed &&
+            ($0.group == .CPU || $0.key.hasPrefix("pACC MTR Temp") || $0.key.hasPrefix("eACC MTR Temp")) }
+        let gpuSources = sensors.filter { $0.type == .temperature && !$0.isComputed &&
+            ($0.group == .GPU || $0.key.hasPrefix("GPU MTR Temp")) }
+        let cpuSensors = cpuSources.filter { $0.average || $0.group == .hid }.map { $0.value }
+        let gpuSensors = gpuSources.filter { $0.average || $0.group == .hid }.map { $0.value }
         
         let fanSensors = sensors.filter({ $0.type == .fan && !$0.isComputed })
         
         if !cpuSensors.isEmpty {
             let value = cpuSensors.reduce(0, +) / Double(cpuSensors.count)
             list.append(Sensor(key: "Average CPU", name: "Average CPU", value: value, group: .CPU, type: .temperature, platforms: Platform.all, isComputed: true))
-            if let max = cpuSensors.max() {
-                list.append(Sensor(key: "Hottest CPU", name: "Hottest CPU", value: max, group: .CPU, type: .temperature, platforms: Platform.all, isComputed: true))
-            }
+        }
+        if let max = cpuSources.map({ $0.value }).max() {
+            list.append(Sensor(key: "Hottest CPU", name: "Hottest CPU", value: max, group: .CPU, type: .temperature, platforms: Platform.all, isComputed: true))
         }
         if !gpuSensors.isEmpty {
             let value = gpuSensors.reduce(0, +) / Double(gpuSensors.count)
             list.append(Sensor(key: "Average GPU", name: "Average GPU", value: value, group: .GPU, type: .temperature, platforms: Platform.all, isComputed: true))
-            if let max = gpuSensors.max() {
-                list.append(Sensor(key: "Hottest GPU", name: "Hottest GPU", value: max, group: .GPU, type: .temperature, platforms: Platform.all, isComputed: true))
-            }
+        }
+        if let max = gpuSources.map({ $0.value }).max() {
+            list.append(Sensor(key: "Hottest GPU", name: "Hottest GPU", value: max, group: .GPU, type: .temperature, platforms: Platform.all, isComputed: true))
         }
         if !fanSensors.isEmpty && fanSensors.count > 1 {
             if let f = fanSensors.max(by: { $0.value < $1.value }) as? Fan {
@@ -329,7 +367,7 @@ internal class SensorsReader: Reader<Sensors_List> {
         return list.filter({ (s: Sensor_p) -> Bool in
             switch s.type {
             case .temperature:
-                return s.value < 110 && s.value >= 0
+                return true
             case .voltage:
                 return s.value < 300 && s.value >= 0
             case .current:
@@ -340,6 +378,8 @@ internal class SensorsReader: Reader<Sensors_List> {
     }
     
     public func unknownCallback() {
+        self.readLock.lock()
+        defer { self.readLock.unlock() }
         self.unknownSensorsState = Store.shared.bool(key: "Sensors_unknown", defaultValue: false)
     }
 }
@@ -365,7 +405,7 @@ extension SensorsReader {
                 }
             }
             
-            if let md = SMC.shared.getValue(SMC.shared.fanModeKey(i)), let parsed = FanMode(rawValue: Int(md)) {
+            if let md = SMC.shared.getValue(SMC.shared.fanModeKey(i), includeZero: true), let parsed = FanMode(rawValue: Int(md)) {
                 mode = parsed.isAutomatic ? .automatic : parsed
             } else {
                 mode = self.getFanMode(i)
@@ -375,9 +415,9 @@ extension SensorsReader {
                 id: i,
                 key: "F\(i)Ac",
                 name: name ?? "\(localizedString("Fan")) #\(i)",
-                minSpeed: SMC.shared.getValue("F\(i)Mn") ?? 1,
-                maxSpeed: SMC.shared.getValue("F\(i)Mx") ?? 1,
-                value: SMC.shared.getValue("F\(i)Ac") ?? 0,
+                minSpeed: SMC.shared.getValue("F\(i)Mn", includeZero: true) ?? 1,
+                maxSpeed: SMC.shared.getValue("F\(i)Mx", includeZero: true) ?? 1,
+                value: SMC.shared.getValue("F\(i)Ac", includeZero: true) ?? 0,
                 mode: mode
             ))
         }
@@ -481,7 +521,7 @@ extension SensorsReader {
                     list.append(Sensor(
                         key: key,
                         name: name,
-                        value: value,
+                        value: typ == .temperature && (!value.isFinite || value <= 0 || value > 150) ? 0 : value,
                         group: .hid,
                         type: typ,
                         platforms: Platform.all
@@ -490,19 +530,22 @@ extension SensorsReader {
             }
         }
         
-        let socSensors = list.filter({ $0.key.hasPrefix("SOC MTR Temp") }).map{ $0.value }
+        self.hasCPUThermalSource = self.hasCPUThermalSource || list.contains { $0.type == .temperature &&
+            ($0.key.hasPrefix("pACC MTR Temp") || $0.key.hasPrefix("eACC MTR Temp")) }
+        self.hasGPUThermalSource = self.hasGPUThermalSource || list.contains { $0.type == .temperature && $0.key.hasPrefix("GPU MTR Temp") }
+        let socSensors = list.filter({ $0.key.hasPrefix("SOC MTR Temp") && $0.value.isFinite && $0.value > 0 && $0.value <= 150 }).map{ $0.value }
         if !socSensors.isEmpty {
             let value = socSensors.reduce(0, +) / Double(socSensors.count)
-            list.append(Sensor(key: "Average SOC", name: "Average SOC", value: value, group: .hid, type: .temperature, platforms: Platform.all))
+            list.append(Sensor(key: "Average SOC", name: "Average SOC", value: value, group: .hid, type: .temperature, platforms: Platform.all, isComputed: true))
             if let max = socSensors.max() {
-                list.append(Sensor(key: "Hottest SOC", name: "Hottest SOC", value: max, group: .hid, type: .temperature, platforms: Platform.all))
+                list.append(Sensor(key: "Hottest SOC", name: "Hottest SOC", value: max, group: .hid, type: .temperature, platforms: Platform.all, isComputed: true))
             }
         }
         
         return list.filter({ (s: Sensor_p) -> Bool in
             switch s.type {
             case .temperature:
-                return s.value < 110 && s.value >= 0
+                return true
             case .voltage:
                 return s.value < 300 && s.value >= 0
             case .current:
@@ -513,13 +556,16 @@ extension SensorsReader {
     }
     
     public func HIDCallback() {
+        self.readLock.lock()
+        defer { self.readLock.unlock() }
         if self.HIDState {
             let hidSensors = self.initHIDSensors()
+            let calculatedSensors = self.initCalculatedSensors(self.list.sensors + hidSensors)
             self.list.update { current in
-                current + hidSensors.filter({ (s: Sensor_p) in !current.contains(where: { $0.key == s.key }) })
+                current + (hidSensors + calculatedSensors).filter({ (s: Sensor_p) in !current.contains(where: { $0.key == s.key }) })
             }
         } else {
-            self.resetHIDSensors()
+            AppleSiliconSensorsReset()
             self.list.update { current in
                 current.filter({ $0.group != .hid })
             }

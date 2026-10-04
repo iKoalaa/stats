@@ -549,6 +549,47 @@
 "Teal" = "암청색";
 "Indigo" = "남색";
 
+// Fan curves
+"Open Fans settings" = "팬 설정 열기";
+"No controllable fans are available on this Mac." = "이 Mac에는 제어 가능한 팬이 없습니다.";
+"Use one temperature curve for all fans." = "모든 팬에 하나의 온도 곡선을 사용합니다.";
+"Use CPU/GPU load" = "CPU/GPU 부하 반영";
+"CPU/GPU load can increase the speed required by the temperature curve." = "CPU/GPU 부하에 따라 온도 곡선에서 요구하는 속도가 증가할 수 있습니다.";
+"Fan control status" = "팬 제어 상태";
+"Temperature sensor" = "온도 센서";
+"Choose the temperature sensor used by this curve." = "이 곡선에서 사용할 온도 센서를 선택합니다.";
+"Physical fan" = "물리적 팬";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "이 프로필에 물리적 팬을 할당합니다. 팬 순서만으로는 CPU 또는 GPU 냉각용 팬을 구분할 수 없습니다.";
+"Fan speed" = "팬 속도";
+"Enable this curve or return its fans to automatic control." = "이 곡선을 활성화하거나 해당 팬을 자동 제어로 되돌립니다.";
+"Reset fan curve" = "팬 곡선 재설정";
+"Restore the five default points without changing the selected sensor." = "선택한 센서를 변경하지 않고 기본 지점 5개를 복원합니다.";
+"Unavailable: %0" = "사용할 수 없음: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "곡선 활성";
+"Curve inactive" = "곡선 비활성";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 RPM / 목표: %2 RPM (%3)";
+"Select an available physical fan to enable this curve." = "이 곡선을 활성화하려면 사용 가능한 물리적 팬을 선택하세요.";
+"Stop curve" = "곡선 중지";
+"Enable curve" = "곡선 활성화";
+"Fan curve editor" = "팬 곡선 편집기";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "지점을 드래그하여 편집합니다. 빈 공간을 이중 클릭하면 지점이 추가되고, 지점을 이중 클릭하면 삭제됩니다.";
+"Maximum of 10 points reached. Remove a point before adding another." = "최대 지점 수인 10개에 도달했습니다. 다른 지점을 추가하기 전에 지점을 하나 삭제하세요.";
+"The last point cannot be removed." = "마지막 지점은 삭제할 수 없습니다.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "1% 및 1 °C 간격으로 지점을 1~10개 사용하세요.";
+"%0% at %1 C" = "%1 °C에서 %0%";
+"Speed (%)" = "속도 (%)";
+"Temperature (C)" = "온도 (°C)";
+"Curve" = "곡선";
+"Waiting for fresh temperature data" = "최신 온도 데이터 대기 중";
+"Waiting for fresh CPU/GPU load" = "최신 CPU/GPU 부하 데이터 대기 중";
+"Select physical fans for CPU and GPU" = "CPU 및 GPU용 물리적 팬을 선택하세요";
+"Fan helper unavailable" = "팬 도우미를 사용할 수 없음";
+"Emergency cooling" = "긴급 냉각";
+"Fan curve command failed" = "팬 곡선 명령 실패";
+"Fan curve paused" = "팬 곡선 일시 정지됨";
+"Fan curve configuration invalid" = "팬 곡선 구성이 유효하지 않음";
+
 // System Stats
 "Authorization" = "인가"; // qwen3.8:27b
 "Identificator" = "식별자"; // qwen3.8:27b

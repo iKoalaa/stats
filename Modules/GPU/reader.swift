@@ -44,6 +44,7 @@ internal class InfoReader: Reader<GPUs> {
     private var gpus: GPUs = GPUs()
     private var displays: [gpu_s] = []
     private var devices: [device] = []
+    private let readLock = NSLock()
 
     private var aneChannels: CFMutableDictionary? = nil
     private var aneSubscription: IOReportSubscriptionRef? = nil
@@ -100,7 +101,21 @@ internal class InfoReader: Reader<GPUs> {
     }
     
     public override func read() {
+        let timestamp = ProcessInfo.processInfo.systemUptime
+        guard self.readLock.try() else { return }
+        defer { self.readLock.unlock() }
+        // Each callback owns its snapshot; later reads never mutate it.
+        let gpus = GPUs()
+        gpus.list = self.gpus.list.map { gpu in
+            var gpu = gpu
+            gpu.utilization = nil
+            gpu.renderUtilization = nil
+            gpu.tilerUtilization = nil
+            return gpu
+        }
+        self.gpus = gpus
         guard let accelerators = fetchIOService(kIOAcceleratorClassName) else {
+            self.callback(nil, at: timestamp)
             return
         }
         var devices = self.devices
@@ -116,7 +131,7 @@ internal class InfoReader: Reader<GPUs> {
                 continue
             }
             
-            var id: String = ""
+            var id: String = "\(IOClass) #\(index)"
             var vendor: String? = nil
             var model: String = ""
             var cores: Int? = nil
@@ -206,10 +221,7 @@ internal class InfoReader: Reader<GPUs> {
                 self.gpus.list[idx].state = state == 0
             }
             
-            if var value = utilization {
-                if value > 100 {
-                    value = 100
-                }
+            if let value = utilization, (0...100).contains(value) {
                 self.gpus.list[idx].utilization = Double(value)/100
             }
             if var value = renderUtilization {
@@ -249,7 +261,7 @@ internal class InfoReader: Reader<GPUs> {
         #endif
         
         self.gpus.list.sort{ !$0.state && $1.state }
-        self.callback(self.gpus)
+        self.callback(self.gpus, at: timestamp)
     }
     
     // MARK: - FPS

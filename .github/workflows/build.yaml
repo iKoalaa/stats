@@ -18,4 +18,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-      - run: xcodebuild -scheme Stats -destination 'platform=macOS' -configuration Release archive CODE_SIGNING_ALLOWED=NO
+      - run: xcodebuild -scheme Stats -destination 'platform=macOS' -configuration Release archive -derivedDataPath "$RUNNER_TEMP/stats-build" CODE_SIGNING_ALLOWED=NO ENABLE_TESTABILITY=YES
+      - name: Fan curve safety tests
+        run: python3 Kit/scripts/run-fan-tests.py --products "$RUNNER_TEMP/stats-build/Build/Intermediates.noindex/ArchiveIntermediates/Stats/BuildProductsPath/Release" --build-dir "$RUNNER_TEMP/stats-fan-tests"

@@ -549,6 +549,47 @@
 "Teal" = "টিল";
 "Indigo" = "নীলাভ";
 
+// Fan curves
+"Open Fans settings" = "ফ্যানের সেটিংস খুলুন";
+"No controllable fans are available on this Mac." = "এই Mac-এ নিয়ন্ত্রণযোগ্য কোনো ফ্যান উপলব্ধ নেই।";
+"Use one temperature curve for all fans." = "সব ফ্যানের জন্য একটি তাপমাত্রা বক্ররেখা ব্যবহার করুন।";
+"Use CPU/GPU load" = "CPU/GPU লোড বিবেচনা করুন";
+"CPU/GPU load can increase the speed required by the temperature curve." = "CPU/GPU লোড তাপমাত্রা বক্ররেখা অনুযায়ী প্রয়োজনীয় গতি বাড়াতে পারে।";
+"Fan control status" = "ফ্যান নিয়ন্ত্রণের অবস্থা";
+"Temperature sensor" = "তাপমাত্রা সেন্সর";
+"Choose the temperature sensor used by this curve." = "এই বক্ররেখায় ব্যবহৃত তাপমাত্রা সেন্সর বেছে নিন।";
+"Physical fan" = "ভৌত ফ্যান";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "এই প্রোফাইলে একটি ভৌত ফ্যান নির্ধারণ করুন। ফ্যানের ক্রম থেকে বোঝা যায় না কোনটি CPU বা GPU ঠান্ডা করে।";
+"Fan speed" = "ফ্যানের গতি";
+"Enable this curve or return its fans to automatic control." = "এই বক্ররেখা চালু করুন অথবা এর ফ্যানগুলোকে স্বয়ংক্রিয় নিয়ন্ত্রণে ফিরিয়ে দিন।";
+"Reset fan curve" = "ফ্যানের বক্ররেখা রিসেট করুন";
+"Restore the five default points without changing the selected sensor." = "নির্বাচিত সেন্সর পরিবর্তন না করে পাঁচটি ডিফল্ট বিন্দু পুনরুদ্ধার করুন।";
+"Unavailable: %0" = "অনুপলব্ধ: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "বক্ররেখা সক্রিয়";
+"Curve inactive" = "বক্ররেখা নিষ্ক্রিয়";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 RPM / লক্ষ্য: %2 RPM (%3)";
+"Select an available physical fan to enable this curve." = "এই বক্ররেখা চালু করতে একটি উপলব্ধ ভৌত ফ্যান নির্বাচন করুন।";
+"Stop curve" = "বক্ররেখা বন্ধ করুন";
+"Enable curve" = "বক্ররেখা চালু করুন";
+"Fan curve editor" = "ফ্যানের বক্ররেখা সম্পাদক";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "সম্পাদনা করতে বিন্দুগুলো টানুন। বিন্দু যোগ করতে খালি জায়গায় ডাবল-ক্লিক করুন; বিন্দু সরাতে সেটিতে ডাবল-ক্লিক করুন।";
+"Maximum of 10 points reached. Remove a point before adding another." = "সর্বোচ্চ 10টি বিন্দুর সীমায় পৌঁছেছে। নতুন বিন্দু যোগ করার আগে একটি বিন্দু সরান।";
+"The last point cannot be removed." = "শেষ বিন্দুটি সরানো যাবে না।";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "1% ও 1 °C ধাপে 1 থেকে 10টি বিন্দু ব্যবহার করুন।";
+"%0% at %1 C" = "%1 °C তাপমাত্রায় %0%";
+"Speed (%)" = "গতি (%)";
+"Temperature (C)" = "তাপমাত্রা (°C)";
+"Curve" = "বক্ররেখা";
+"Waiting for fresh temperature data" = "নতুন তাপমাত্রার তথ্যের জন্য অপেক্ষা করছে";
+"Waiting for fresh CPU/GPU load" = "নতুন CPU/GPU লোডের তথ্যের জন্য অপেক্ষা করছে";
+"Select physical fans for CPU and GPU" = "CPU ও GPU-এর জন্য ভৌত ফ্যান নির্বাচন করুন";
+"Fan helper unavailable" = "ফ্যান হেল্পার অনুপলব্ধ";
+"Emergency cooling" = "জরুরি শীতলীকরণ";
+"Fan curve command failed" = "ফ্যানের বক্ররেখার কমান্ড ব্যর্থ হয়েছে";
+"Fan curve paused" = "ফ্যানের বক্ররেখা সাময়িকভাবে বন্ধ";
+"Fan curve configuration invalid" = "ফ্যানের বক্ররেখার কনফিগারেশন অবৈধ";
+
 // System Stats
 "Authorization" = "অনুমোদন"; // qwen3.8:27b
 "Identificator" = "পরিচিতি"; // qwen3.8:27b

@@ -549,6 +549,47 @@
 "Teal" = "Teal";
 "Indigo" = "Indigo";
 
+// Fan curves
+"Open Fans settings" = "Open fan settings";
+"No controllable fans are available on this Mac." = "No controllable fans are available on this Mac.";
+"Use one temperature curve for all fans." = "Use one temperature curve for all fans.";
+"Use CPU/GPU load" = "Use CPU/GPU load";
+"CPU/GPU load can increase the speed required by the temperature curve." = "CPU/GPU load can increase the speed required by the temperature curve.";
+"Fan control status" = "Fan control status";
+"Temperature sensor" = "Temperature sensor";
+"Choose the temperature sensor used by this curve." = "Choose the temperature sensor used by this curve.";
+"Physical fan" = "Physical fan";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling.";
+"Fan speed" = "Fan speed";
+"Enable this curve or return its fans to automatic control." = "Enable this curve or return its fans to automatic control.";
+"Reset fan curve" = "Reset fan curve";
+"Restore the five default points without changing the selected sensor." = "Restore the five default points without changing the selected sensor.";
+"Unavailable: %0" = "Unavailable: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Curve active";
+"Curve inactive" = "Curve inactive";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 RPM / Target: %2 RPM (%3)";
+"Select an available physical fan to enable this curve." = "Select an available physical fan to enable this curve.";
+"Stop curve" = "Stop curve";
+"Enable curve" = "Enable curve";
+"Fan curve editor" = "Fan curve editor";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Drag points to edit. Double-click empty space to add a point; double-click a point to remove it.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Maximum of 10 points reached. Remove a point before adding another.";
+"The last point cannot be removed." = "The last point cannot be removed.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Use 1 to 10 points, in steps of 1% and 1 °C.";
+"%0% at %1 C" = "%0% at %1 °C";
+"Speed (%)" = "Speed (%)";
+"Temperature (C)" = "Temperature (°C)";
+"Curve" = "Curve";
+"Waiting for fresh temperature data" = "Waiting for fresh temperature data";
+"Waiting for fresh CPU/GPU load" = "Waiting for fresh CPU/GPU load";
+"Select physical fans for CPU and GPU" = "Select physical fans for CPU and GPU";
+"Fan helper unavailable" = "Fan helper unavailable";
+"Emergency cooling" = "Emergency cooling";
+"Fan curve command failed" = "Fan curve command failed";
+"Fan curve paused" = "Fan curve paused";
+"Fan curve configuration invalid" = "Fan curve configuration invalid";
+
 // System Stats
 "Authorization" = "Authorisation";
 "Identificator" = "Identificator";

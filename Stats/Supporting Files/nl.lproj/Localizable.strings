@@ -549,6 +549,47 @@
 "Teal" = "Turkoois";
 "Indigo" = "Indigo";
 
+// Fan curves
+"Open Fans settings" = "Ventilatorinstellingen openen";
+"No controllable fans are available on this Mac." = "Er zijn geen regelbare ventilatoren beschikbaar op deze Mac.";
+"Use one temperature curve for all fans." = "Eén temperatuurcurve voor alle ventilatoren gebruiken.";
+"Use CPU/GPU load" = "CPU/GPU-belasting meewegen";
+"CPU/GPU load can increase the speed required by the temperature curve." = "De CPU/GPU-belasting kan de door de temperatuurcurve vereiste snelheid verhogen.";
+"Fan control status" = "Status van ventilatorregeling";
+"Temperature sensor" = "Temperatuursensor";
+"Choose the temperature sensor used by this curve." = "Kies de temperatuursensor die door deze curve wordt gebruikt.";
+"Physical fan" = "Fysieke ventilator";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Wijs een fysieke ventilator toe aan dit profiel. De volgorde van de ventilatoren geeft niet aan welke de CPU of GPU koelt.";
+"Fan speed" = "Ventilatorsnelheid";
+"Enable this curve or return its fans to automatic control." = "Schakel deze curve in of zet de ventilatoren terug op automatische regeling.";
+"Reset fan curve" = "Ventilatorcurve herstellen";
+"Restore the five default points without changing the selected sensor." = "Herstel de vijf standaardpunten zonder de geselecteerde sensor te wijzigen.";
+"Unavailable: %0" = "Niet beschikbaar: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Curve actief";
+"Curve inactive" = "Curve inactief";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 RPM / Doel: %2 RPM (%3)";
+"Select an available physical fan to enable this curve." = "Selecteer een beschikbare fysieke ventilator om deze curve in te schakelen.";
+"Stop curve" = "Curve stoppen";
+"Enable curve" = "Curve inschakelen";
+"Fan curve editor" = "Ventilatorcurve-editor";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Versleep punten om ze te bewerken. Dubbelklik op een lege plek om een punt toe te voegen; dubbelklik op een punt om het te verwijderen.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Het maximum van 10 punten is bereikt. Verwijder een punt voordat je een nieuw punt toevoegt.";
+"The last point cannot be removed." = "Het laatste punt kan niet worden verwijderd.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Gebruik 1 tot 10 punten, in stappen van 1% en 1 °C.";
+"%0% at %1 C" = "%0% bij %1 °C";
+"Speed (%)" = "Snelheid (%)";
+"Temperature (C)" = "Temperatuur (°C)";
+"Curve" = "Curve";
+"Waiting for fresh temperature data" = "Wachten op nieuwe temperatuurgegevens";
+"Waiting for fresh CPU/GPU load" = "Wachten op nieuwe CPU/GPU-belasting";
+"Select physical fans for CPU and GPU" = "Selecteer fysieke ventilatoren voor CPU en GPU";
+"Fan helper unavailable" = "Ventilatorhulpprogramma niet beschikbaar";
+"Emergency cooling" = "Noodkoeling";
+"Fan curve command failed" = "Ventilatorcurve-opdracht mislukt";
+"Fan curve paused" = "Ventilatorcurve gepauzeerd";
+"Fan curve configuration invalid" = "Ongeldige ventilatorcurveconfiguratie";
+
 // System Stats
 "Authorization" = "Autorisatie"; // qwen3.8:27b
 "Identificator" = "Identificeerder"; // qwen3.8:27b

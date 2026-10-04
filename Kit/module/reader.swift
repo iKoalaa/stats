@@ -29,6 +29,7 @@ public protocol Reader_p {
     
     func initStoreValues(title: String)
     func setInterval(_ value: Int)
+    func setControlDemand(_ enabled: Bool)
     func sleepMode(state: Bool)
 }
 
@@ -53,7 +54,18 @@ open class Reader<T: Codable>: NSObject, ReaderInternal_p {
         String(NSStringFromClass(type(of: self)).split(separator: ".").last ?? "unknown")
     }
     
-    public var interval: Double? = nil
+    private var _interval: Double? = nil
+    private var _controlDemand: Bool = false
+    public var interval: Double? {
+        get { self.valueQueue.sync { self._interval } }
+        set { self.valueQueue.sync { self._interval = newValue } }
+    }
+    public var controlDemand: Bool {
+        self.valueQueue.sync { self._controlDemand }
+    }
+    private var effectiveInterval: Double? {
+        self.valueQueue.sync { self._controlDemand ? 1 : self._interval }
+    }
     public var defaultInterval: Int = 1
     public var popup: Bool = false
     public var preview: Bool = false
@@ -63,6 +75,7 @@ open class Reader<T: Codable>: NSObject, ReaderInternal_p {
     public var alignOffset: TimeInterval = 0
     
     public var callbackHandler: (T?) -> Void
+    public var measurementHandler: ((T?, TimeInterval) -> Void)?
     
     private let module: ModuleType
     private var history: Bool
@@ -110,9 +123,10 @@ open class Reader<T: Codable>: NSObject, ReaderInternal_p {
         self.interval = Double(updateInterval)
     }
     
-    public func callback(_ value: T?) {
+    public func callback(_ value: T?, at timestamp: TimeInterval = ProcessInfo.processInfo.systemUptime) {
         let moduleKey = "\(self.module.stringValue)@\(self.name)"
         self.value = value
+        self.measurementHandler?(value, timestamp)
         if let value {
             self.callbackHandler(value)
             SystemStats.shared.send(key: moduleKey, value: value)
@@ -131,56 +145,55 @@ open class Reader<T: Codable>: NSObject, ReaderInternal_p {
     open func terminate() {}
     
     open func start() {
-        if (self.popup || self.preview || self.sleep) && self.locked {
-            DispatchQueue.global(qos: .background).async {
-                self.read()
-            }
+        self.alignQueue.sync { self.startRepeater() }
+    }
+
+    private func startRepeater() {
+        if (self.popup || self.preview || self.sleep) && self.locked && !self.controlDemand {
+            DispatchQueue.global(qos: .background).async { self.read() }
             return
         }
-        
-        self.alignQueue.sync {
-            if self.alignToSecondBoundary {
-                if self.repeatTask == nil {
-                    self.startAlignedRepeater()
-                } else {
-                    self.repeatTask?.start()
-                }
-            } else if !self.initlizalized {
-                self.startNormalRepeater()
-                DispatchQueue.global(qos: .background).async { self.read() }
-                self.repeatTask?.start()
-                self.initlizalized = true
+        if self.alignToSecondBoundary {
+            if self.repeatTask == nil {
+                self.startAlignedRepeater()
             } else {
                 self.repeatTask?.start()
             }
+        } else if !self.initlizalized || self.repeatTask == nil {
+            self.startNormalRepeater()
+            DispatchQueue.global(qos: .background).async { self.read() }
+            self.repeatTask?.start()
+            self.initlizalized = true
+        } else {
+            self.repeatTask?.start()
         }
-        
         self.active = true
     }
     
     open func pause() {
         self.alignQueue.sync {
+            guard !self.controlDemand else { return }
             self.alignGeneration &+= 1
             self.repeatTask?.pause()
+            self.active = false
         }
-        self.active = false
     }
     
     open func stop() {
         self.alignQueue.sync {
+            guard !self.controlDemand else { return }
             self.alignGeneration &+= 1
             self.repeatTask?.pause()
             self.repeatTask = nil
             self.initlizalized = false
+            self.active = false
         }
-        self.active = false
     }
     
     public func setInterval(_ value: Int) {
         debug("Set update interval: \(value) sec", log: self.log)
-        self.interval = Double(value)
-        
         self.alignQueue.sync {
+            self.interval = Double(value)
             if self.alignToSecondBoundary {
                 self.alignGeneration &+= 1
                 self.repeatTask?.pause()
@@ -189,8 +202,26 @@ open class Reader<T: Codable>: NSObject, ReaderInternal_p {
                     self.startAlignedRepeater()
                 }
             } else {
-                self.repeatTask?.reset(seconds: value, restart: self.active)
+                self.repeatTask?.reset(seconds: Int(self.effectiveInterval ?? Double(self.defaultInterval)))
+                if self.active { self.repeatTask?.start() }
             }
+        }
+    }
+
+    public func setControlDemand(_ enabled: Bool) {
+        self.alignQueue.sync {
+            guard self.controlDemand != enabled else { return }
+            self.valueQueue.sync { self._controlDemand = enabled }
+            if self.alignToSecondBoundary {
+                self.alignGeneration &+= 1
+                self.repeatTask?.pause()
+                self.repeatTask = nil
+                if self.active { self.startAlignedRepeater() }
+            } else {
+                self.repeatTask?.reset(seconds: Int(self.effectiveInterval ?? Double(self.defaultInterval)))
+                if self.active { self.repeatTask?.start() }
+            }
+            if enabled { self.startRepeater() }
         }
     }
     
@@ -207,7 +238,7 @@ open class Reader<T: Codable>: NSObject, ReaderInternal_p {
     }
     
     private func startNormalRepeater() {
-        guard let interval = self.interval, self.repeatTask == nil else { return }
+        guard let interval = self.effectiveInterval, self.repeatTask == nil else { return }
         
         if !self.popup && !self.preview {
             debug("Set up update interval: \(Int(interval)) sec", log: self.log)
@@ -219,7 +250,7 @@ open class Reader<T: Codable>: NSObject, ReaderInternal_p {
     }
     
     private func startAlignedRepeater() {
-        guard let interval = self.interval, self.repeatTask == nil else { return }
+        guard let interval = self.effectiveInterval, self.repeatTask == nil else { return }
         
         if !self.popup && !self.preview {
             debug("Set up update interval: \(Int(interval)) sec (aligned)", log: self.log)
@@ -245,7 +276,7 @@ open class Reader<T: Codable>: NSObject, ReaderInternal_p {
         self.sleep = state
 
         if state {
-            if self.locked {
+            if self.alignQueue.sync(execute: { self.locked }) {
                 self.pause()
             }
         } else {
@@ -256,10 +287,10 @@ open class Reader<T: Codable>: NSObject, ReaderInternal_p {
 
 extension Reader: Reader_p {
     public func lock() {
-        self.locked = true
+        self.alignQueue.sync { self.locked = true }
     }
     
     public func unlock() {
-        self.locked = false
+        self.alignQueue.sync { self.locked = false }
     }
 }

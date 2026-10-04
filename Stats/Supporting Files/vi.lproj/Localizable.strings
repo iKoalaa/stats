@@ -549,6 +549,47 @@
 "Teal" = "Xanh lục lam";
 "Indigo" = "Chàm";
 
+// Fan curves
+"Open Fans settings" = "Mở cài đặt quạt";
+"No controllable fans are available on this Mac." = "Không có quạt nào có thể điều khiển trên máy Mac này.";
+"Use one temperature curve for all fans." = "Dùng một đường cong nhiệt độ cho tất cả quạt.";
+"Use CPU/GPU load" = "Tính đến tải CPU/GPU";
+"CPU/GPU load can increase the speed required by the temperature curve." = "Tải CPU/GPU có thể làm tăng tốc độ mà đường cong nhiệt độ yêu cầu.";
+"Fan control status" = "Trạng thái điều khiển quạt";
+"Temperature sensor" = "Cảm biến nhiệt độ";
+"Choose the temperature sensor used by this curve." = "Chọn cảm biến nhiệt độ dùng cho đường cong này.";
+"Physical fan" = "Quạt vật lý";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Gán một quạt vật lý cho hồ sơ này. Thứ tự quạt không cho biết quạt nào làm mát CPU hay GPU.";
+"Fan speed" = "Tốc độ quạt";
+"Enable this curve or return its fans to automatic control." = "Bật đường cong này hoặc đưa các quạt của nó về chế độ điều khiển tự động.";
+"Reset fan curve" = "Đặt lại đường cong quạt";
+"Restore the five default points without changing the selected sensor." = "Khôi phục năm điểm mặc định mà không thay đổi cảm biến đã chọn.";
+"Unavailable: %0" = "Không khả dụng: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Đường cong đang hoạt động";
+"Curve inactive" = "Đường cong không hoạt động";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 vòng/phút / Mục tiêu: %2 vòng/phút (%3)";
+"Select an available physical fan to enable this curve." = "Chọn một quạt vật lý khả dụng để bật đường cong này.";
+"Stop curve" = "Dừng đường cong";
+"Enable curve" = "Bật đường cong";
+"Fan curve editor" = "Trình chỉnh sửa đường cong quạt";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Kéo các điểm để chỉnh sửa. Nhấp đúp vào vùng trống để thêm điểm; nhấp đúp vào một điểm để xóa điểm đó.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Đã đạt giới hạn tối đa 10 điểm. Xóa một điểm trước khi thêm điểm khác.";
+"The last point cannot be removed." = "Không thể xóa điểm cuối cùng.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Dùng từ 1 đến 10 điểm, với bước điều chỉnh 1% và 1 °C.";
+"%0% at %1 C" = "%0% ở %1 °C";
+"Speed (%)" = "Tốc độ (%)";
+"Temperature (C)" = "Nhiệt độ (°C)";
+"Curve" = "Đường cong";
+"Waiting for fresh temperature data" = "Đang chờ dữ liệu nhiệt độ mới";
+"Waiting for fresh CPU/GPU load" = "Đang chờ dữ liệu tải CPU/GPU mới";
+"Select physical fans for CPU and GPU" = "Chọn quạt vật lý cho CPU và GPU";
+"Fan helper unavailable" = "Trợ lý quạt không khả dụng";
+"Emergency cooling" = "Làm mát khẩn cấp";
+"Fan curve command failed" = "Lệnh đường cong quạt thất bại";
+"Fan curve paused" = "Đường cong quạt đã tạm dừng";
+"Fan curve configuration invalid" = "Cấu hình đường cong quạt không hợp lệ";
+
 // System Stats
 "Authorization" = "Xác thực"; // qwen3.8:27b
 "Identificator" = "Định danh"; // qwen3.8:27b

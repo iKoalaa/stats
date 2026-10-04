@@ -549,6 +549,47 @@
 "Teal" = "کله غازی";
 "Indigo" = "نیلی";
 
+// Fan curves
+"Open Fans settings" = "باز کردن تنظیمات فن‌ها";
+"No controllable fans are available on this Mac." = "هیچ فن قابل کنترلی در این Mac در دسترس نیست.";
+"Use one temperature curve for all fans." = "استفاده از یک منحنی دما برای همهٔ فن‌ها.";
+"Use CPU/GPU load" = "در نظر گرفتن بار CPU/GPU";
+"CPU/GPU load can increase the speed required by the temperature curve." = "بار CPU/GPU می‌تواند سرعت مورد نیاز منحنی دما را افزایش دهد.";
+"Fan control status" = "وضعیت کنترل فن‌ها";
+"Temperature sensor" = "حسگر دما";
+"Choose the temperature sensor used by this curve." = "حسگر دمای مورد استفادهٔ این منحنی را انتخاب کنید.";
+"Physical fan" = "فن فیزیکی";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "یک فن فیزیکی به این نمایه اختصاص دهید. ترتیب فن‌ها مشخص نمی‌کند کدام‌یک CPU یا GPU را خنک می‌کند.";
+"Fan speed" = "سرعت فن";
+"Enable this curve or return its fans to automatic control." = "این منحنی را فعال کنید یا فن‌های آن را به کنترل خودکار بازگردانید.";
+"Reset fan curve" = "بازنشانی منحنی فن";
+"Restore the five default points without changing the selected sensor." = "بازیابی پنج نقطهٔ پیش‌فرض بدون تغییر حسگر انتخاب‌شده.";
+"Unavailable: %0" = "در دسترس نیست: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "منحنی فعال";
+"Curve inactive" = "منحنی غیرفعال";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 دور در دقیقه / هدف: %2 دور در دقیقه (%3)";
+"Select an available physical fan to enable this curve." = "برای فعال کردن این منحنی، یک فن فیزیکی در دسترس انتخاب کنید.";
+"Stop curve" = "توقف منحنی";
+"Enable curve" = "فعال کردن منحنی";
+"Fan curve editor" = "ویرایشگر منحنی فن";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "برای ویرایش، نقطه‌ها را بکشید. برای افزودن نقطه، روی فضای خالی دوبار کلیک کنید؛ برای حذف نقطه، روی آن دوبار کلیک کنید.";
+"Maximum of 10 points reached. Remove a point before adding another." = "به حداکثر 10 نقطه رسیده‌اید. پیش از افزودن نقطهٔ جدید، یک نقطه را حذف کنید.";
+"The last point cannot be removed." = "آخرین نقطه را نمی‌توان حذف کرد.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "از 1 تا 10 نقطه با گام‌های 1% و 1 °C استفاده کنید.";
+"%0% at %1 C" = "%0% در %1 °C";
+"Speed (%)" = "سرعت (%)";
+"Temperature (C)" = "دما (°C)";
+"Curve" = "منحنی";
+"Waiting for fresh temperature data" = "در انتظار داده‌های تازهٔ دما";
+"Waiting for fresh CPU/GPU load" = "در انتظار داده‌های تازهٔ بار CPU/GPU";
+"Select physical fans for CPU and GPU" = "فن‌های فیزیکی CPU و GPU را انتخاب کنید";
+"Fan helper unavailable" = "دستیار فن در دسترس نیست";
+"Emergency cooling" = "خنک‌سازی اضطراری";
+"Fan curve command failed" = "فرمان منحنی فن ناموفق بود";
+"Fan curve paused" = "منحنی فن موقتاً متوقف شده است";
+"Fan curve configuration invalid" = "پیکربندی منحنی فن نامعتبر است";
+
 // System Stats
 "Authorization" = "مجوز"; // qwen3.8:27b
 "Identificator" = "شناسه"; // qwen3.8:27b

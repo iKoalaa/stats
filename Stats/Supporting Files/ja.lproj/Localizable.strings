@@ -549,6 +549,47 @@
 "Teal" = "ティール";
 "Indigo" = "インディゴ";
 
+// Fan curves
+"Open Fans settings" = "ファンの設定を開く";
+"No controllable fans are available on this Mac." = "このMacには制御可能なファンがありません。";
+"Use one temperature curve for all fans." = "すべてのファンに同じ温度カーブを使用します。";
+"Use CPU/GPU load" = "CPU/GPUの負荷を考慮";
+"CPU/GPU load can increase the speed required by the temperature curve." = "CPU/GPUの負荷に応じて、温度カーブで指定された回転速度を引き上げることがあります。";
+"Fan control status" = "ファン制御の状態";
+"Temperature sensor" = "温度センサー";
+"Choose the temperature sensor used by this curve." = "このカーブで使用する温度センサーを選択します。";
+"Physical fan" = "物理ファン";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "このプロファイルに物理ファンを割り当てます。ファンの順序では、CPUとGPUのどちらを冷却するかは判別できません。";
+"Fan speed" = "ファンの回転速度";
+"Enable this curve or return its fans to automatic control." = "このカーブを有効にするか、対象のファンを自動制御に戻します。";
+"Reset fan curve" = "ファンカーブをリセット";
+"Restore the five default points without changing the selected sensor." = "選択したセンサーを変更せずに、5つの既定のポイントを復元します。";
+"Unavailable: %0" = "利用不可: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "カーブ有効";
+"Curve inactive" = "カーブ無効";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 RPM / 目標: %2 RPM (%3)";
+"Select an available physical fan to enable this curve." = "このカーブを有効にするには、利用可能な物理ファンを選択してください。";
+"Stop curve" = "カーブを停止";
+"Enable curve" = "カーブを有効化";
+"Fan curve editor" = "ファンカーブエディタ";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "ポイントをドラッグして編集します。空白部分をダブルクリックするとポイントを追加でき、ポイントをダブルクリックすると削除できます。";
+"Maximum of 10 points reached. Remove a point before adding another." = "ポイント数が上限の10個に達しました。追加する前にポイントを1つ削除してください。";
+"The last point cannot be removed." = "最後のポイントは削除できません。";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "1〜10個のポイントを、1%と1 °C刻みで設定できます。";
+"%0% at %1 C" = "%1 °Cで%0%";
+"Speed (%)" = "回転速度 (%)";
+"Temperature (C)" = "温度 (°C)";
+"Curve" = "カーブ";
+"Waiting for fresh temperature data" = "最新の温度データを待機中";
+"Waiting for fresh CPU/GPU load" = "最新のCPU/GPU負荷データを待機中";
+"Select physical fans for CPU and GPU" = "CPUとGPU用の物理ファンを選択してください";
+"Fan helper unavailable" = "ファンヘルパーを利用できません";
+"Emergency cooling" = "緊急冷却";
+"Fan curve command failed" = "ファンカーブのコマンドが失敗しました";
+"Fan curve paused" = "ファンカーブを一時停止中";
+"Fan curve configuration invalid" = "ファンカーブの設定が無効です";
+
 // System Stats
 "Authorization" = "認証"; // qwen3.8:27b
 "Identificator" = "識別子"; // qwen3.8:27b

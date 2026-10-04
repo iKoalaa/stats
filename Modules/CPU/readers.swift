@@ -20,6 +20,7 @@ internal class LoadReader: Reader<CPU_Load> {
     private var numCPUs: uint = 0
     private let CPUUsageLock: NSLock = NSLock()
     private var previousInfo = host_cpu_load_info()
+    private var hasBaseline = false
     private var hasHyperthreadingCores = false
     
     private var response: CPU_Load = CPU_Load()
@@ -41,6 +42,7 @@ internal class LoadReader: Reader<CPU_Load> {
     
     public override func read() {
         self.CPUUsageLock.lock()
+        let timestamp = ProcessInfo.processInfo.systemUptime
         
         let result: kern_return_t = host_processor_info(machHostPort, PROCESSOR_CPU_LOAD_INFO, &self.numCPUsU, &self.cpuInfo, &self.numCpuInfo)
         if result == KERN_SUCCESS {
@@ -97,8 +99,16 @@ internal class LoadReader: Reader<CPU_Load> {
         
         let cpuInfo = hostCPULoadInfo()
         if cpuInfo == nil {
+            self.hasBaseline = false
             self.CPUUsageLock.unlock()
-            self.callback(nil)
+            self.callback(nil, at: timestamp)
+            return
+        }
+        guard self.hasBaseline else {
+            self.previousInfo = cpuInfo!
+            self.hasBaseline = true
+            self.CPUUsageLock.unlock()
+            self.callback(nil, at: timestamp)
             return
         }
         
@@ -107,21 +117,20 @@ internal class LoadReader: Reader<CPU_Load> {
         let idleDiff = Double(cpuInfo!.cpu_ticks.2 &- self.previousInfo.cpu_ticks.2)
         let niceDiff = Double(cpuInfo!.cpu_ticks.3 &- self.previousInfo.cpu_ticks.3)
         let totalTicks = sysDiff + userDiff + niceDiff + idleDiff
+        self.previousInfo = cpuInfo!
+        guard totalTicks > 0 else {
+            self.CPUUsageLock.unlock()
+            self.callback(nil, at: timestamp)
+            return
+        }
         
         let system = sysDiff / totalTicks
         let user = userDiff / totalTicks
         let idle = idleDiff / totalTicks
         
-        if !system.isNaN {
-            self.response.systemLoad  = system
-        }
-        if !user.isNaN {
-            self.response.userLoad = user
-        }
-        if !idle.isNaN {
-            self.response.idleLoad = idle
-        }
-        self.previousInfo = cpuInfo!
+        self.response.systemLoad = system
+        self.response.userLoad = user
+        self.response.idleLoad = idle
         self.response.totalUsage = self.response.systemLoad + self.response.userLoad
         
         if let cores = self.cores {
@@ -157,7 +166,7 @@ internal class LoadReader: Reader<CPU_Load> {
         
         let response = self.response
         self.CPUUsageLock.unlock()
-        self.callback(response)
+        self.callback(response, at: timestamp)
     }
     
     private func hostCPULoadInfo() -> host_cpu_load_info? {

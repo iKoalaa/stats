@@ -28,10 +28,12 @@ class SettingsWindow: NSWindow, NSWindowDelegate, NSToolbarDelegate {
     
     private var dashboard: NSView = Dashboard()
     private var settings: ApplicationSettings = ApplicationSettings()
+    private lazy var fansSettings = FansSettings()
     
     private var toggleButton: NSControl? = nil
     private var activeModuleName: String? = nil
     private var visibleModuleName: String? = nil
+    private var fansSelected = false
     private var settingsPreviewButton: NSView? = nil
     
     init() {
@@ -126,6 +128,7 @@ class SettingsWindow: NSWindow, NSWindowDelegate, NSToolbarDelegate {
     }
 
     private func updateReaderVisibility(visible: Bool? = nil) {
+        FanCurveController.shared.setSettingsVisible((visible ?? (self.isVisible && !self.isMiniaturized)) && self.fansSelected)
         let name = (visible ?? (self.isVisible && !self.isMiniaturized)) ? self.activeModuleName : nil
         guard name != self.visibleModuleName else { return }
         self.visibleModuleName = name
@@ -209,8 +212,15 @@ class SettingsWindow: NSWindow, NSWindowDelegate, NSToolbarDelegate {
     
     @objc private func menuCallback(_ notification: Notification) {
         if let title = notification.userInfo?["module"] as? String {
+            self.fansSelected = title == "Fans"
             var view: NSView = NSView()
-            if let detectedModule = modules.first(where: { $0.config.name == title }) {
+            if title == "Fans" {
+                self.activeModuleName = nil
+                self.fansSettings.viewWillAppear()
+                view = self.fansSettings
+                self.toggleButton?.isHidden = true
+                self.settingsPreviewButton?.isHidden = true
+            } else if let detectedModule = modules.first(where: { $0.config.name == title }) {
                 if let v = detectedModule.window {
                     view = v
                 }
@@ -409,6 +419,11 @@ private class SidebarView: NSStackView {
             let menu: NSView = MenuItem(icon: m.config.icon, title: m.config.name)
             self.scrollView.stackView.insertArrangedSubview(menu, at: 2)
         }
+        let gpuIndex = self.scrollView.stackView.arrangedSubviews.firstIndex {
+            ($0 as? MenuItem)?.title == "GPU"
+        }
+        let fans = MenuItem(icon: iconFromSymbol(name: "fanblades", scale: .large), title: "Fans")
+        self.scrollView.stackView.insertArrangedSubview(fans, at: gpuIndex.map { $0 + 1 } ?? 2)
     }
     
     private func makeButton(title: String, image: NSImage, action: Selector) -> NSButton {

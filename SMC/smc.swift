@@ -205,7 +205,7 @@ public class SMC {
         return IOServiceClose(conn)
     }
     
-    public func getValue(_ key: String) -> Double? {
+    public func getValue(_ key: String, includeZero: Bool = false) -> Double? {
         var result: kern_return_t = 0
         var val: SMCVal_t = SMCVal_t(key)
         
@@ -217,7 +217,7 @@ public class SMC {
         }
         
         if val.dataSize > 0 {
-            if val.bytes.first(where: { $0 != 0 }) == nil && val.key != "FS! " && val.key != "F0Md" && val.key != "F1Md" && val.key != "F0md" && val.key != "F1md" {
+            if !includeZero && val.bytes.first(where: { $0 != 0 }) == nil && val.key != "FS! " && val.key != "F0Md" && val.key != "F1Md" && val.key != "F0md" && val.key != "F1md" {
                 return nil
             }
             

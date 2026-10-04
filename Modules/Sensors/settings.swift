@@ -31,6 +31,8 @@ internal class Settings: NSStackView, Settings_v {
     private var list: [Sensor_p] = []
     private var sensorsPrefs: PreferencesSection?
     private var selectedSensor: String = "Average System Total"
+    private var fansSyncControl: NSSwitch?
+    private var fansSyncObserver: NSObjectProtocol?
     
     public init(_ module: ModuleType) {
         self.title = module.stringValue
@@ -56,6 +58,17 @@ internal class Settings: NSStackView, Settings_v {
             ))
         ]))
         
+        let fansSyncControl = switchView(action: #selector(self.toggleFansSync), state: self.fansSyncState)
+        self.fansSyncControl = fansSyncControl
+        self.fansSyncObserver = NotificationCenter.default.addObserver(
+            forName: Notification.Name("FanCurveChanged"), object: nil, queue: .main
+        ) { [weak self] _ in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                self.fansSyncState = FanCurveController.shared.synchronized
+                self.fansSyncControl?.state = self.fansSyncState ? .on : .off
+            }
+        }
         self.addArrangedSubview(PreferencesSection([
             PreferencesRow(localizedString("Fan value"), component: selectView(
                 action: #selector(self.toggleFanValue),
@@ -66,10 +79,7 @@ internal class Settings: NSStackView, Settings_v {
                 action: #selector(self.toggleSpeedState),
                 state: self.fanSpeedState
             )),
-            PreferencesRow(localizedString("Synchronize fan's control"), component: switchView(
-                action: #selector(self.toggleFansSync),
-                state: self.fansSyncState
-            ))
+            PreferencesRow(localizedString("Synchronize fan's control"), component: fansSyncControl)
         ]))
         
         var sensorsRows: [PreferencesRow] = [
@@ -96,6 +106,10 @@ internal class Settings: NSStackView, Settings_v {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        if let observer = self.fansSyncObserver { NotificationCenter.default.removeObserver(observer) }
     }
     
     public func load(widgets: [widget_t]) {
@@ -185,7 +199,10 @@ internal class Settings: NSStackView, Settings_v {
     }
     @objc private func toggleFansSync(_ sender: NSControl) {
         self.fansSyncState = controlState(sender)
-        Store.shared.set(key: "\(self.title)_fansSync", value: self.fansSyncState)
+        let synchronized = self.fansSyncState
+        DispatchQueue.main.async {
+            FanCurveController.shared.setSynchronized(synchronized)
+        }
     }
     @objc private func toggleuUnknownSensors(_ sender: NSControl) {
         self.unknownSensorsState = controlState(sender)

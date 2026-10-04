@@ -549,6 +549,47 @@
 "Teal" = "Verd-blau";
 "Indigo" = "Indi";
 
+// Fan curves
+"Open Fans settings" = "Obre la configuració dels ventiladors";
+"No controllable fans are available on this Mac." = "No hi ha ventiladors controlables disponibles en aquest Mac.";
+"Use one temperature curve for all fans." = "Utilitza una sola corba de temperatura per a tots els ventiladors.";
+"Use CPU/GPU load" = "Tingues en compte la càrrega de CPU/GPU";
+"CPU/GPU load can increase the speed required by the temperature curve." = "La càrrega de CPU/GPU pot augmentar la velocitat requerida per la corba de temperatura.";
+"Fan control status" = "Estat del control dels ventiladors";
+"Temperature sensor" = "Sensor de temperatura";
+"Choose the temperature sensor used by this curve." = "Tria el sensor de temperatura que utilitza aquesta corba.";
+"Physical fan" = "Ventilador físic";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Assigna un ventilador físic a aquest perfil. L'ordre dels ventiladors no indica quin refreda la CPU o la GPU.";
+"Fan speed" = "Velocitat del ventilador";
+"Enable this curve or return its fans to automatic control." = "Activa aquesta corba o torna els seus ventiladors al control automàtic.";
+"Reset fan curve" = "Restableix la corba del ventilador";
+"Restore the five default points without changing the selected sensor." = "Restaura els cinc punts predeterminats sense canviar el sensor seleccionat.";
+"Unavailable: %0" = "No disponible: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Corba activa";
+"Curve inactive" = "Corba inactiva";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 RPM / Objectiu: %2 RPM (%3)";
+"Select an available physical fan to enable this curve." = "Selecciona un ventilador físic disponible per activar aquesta corba.";
+"Stop curve" = "Atura la corba";
+"Enable curve" = "Activa la corba";
+"Fan curve editor" = "Editor de corbes de ventilador";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Arrossega els punts per editar-los. Fes doble clic en un espai buit per afegir un punt; fes doble clic en un punt per eliminar-lo.";
+"Maximum of 10 points reached. Remove a point before adding another." = "S'ha arribat al màxim de 10 punts. Elimina un punt abans d'afegir-ne un altre.";
+"The last point cannot be removed." = "No es pot eliminar l'últim punt.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Utilitza d'1 a 10 punts, en passos d'1% i 1 °C.";
+"%0% at %1 C" = "%0% a %1 °C";
+"Speed (%)" = "Velocitat (%)";
+"Temperature (C)" = "Temperatura (°C)";
+"Curve" = "Corba";
+"Waiting for fresh temperature data" = "Esperant dades noves de temperatura";
+"Waiting for fresh CPU/GPU load" = "Esperant dades noves de càrrega de CPU/GPU";
+"Select physical fans for CPU and GPU" = "Selecciona ventiladors físics per a la CPU i la GPU";
+"Fan helper unavailable" = "Auxiliar dels ventiladors no disponible";
+"Emergency cooling" = "Refrigeració d'emergència";
+"Fan curve command failed" = "Ha fallat l'ordre de la corba del ventilador";
+"Fan curve paused" = "Corba del ventilador en pausa";
+"Fan curve configuration invalid" = "Configuració de la corba del ventilador no vàlida";
+
 // System Stats
 "Authorization" = "Autorització"; // qwen3.8:27b
 "Identificator" = "Identificador"; // qwen3.8:27b

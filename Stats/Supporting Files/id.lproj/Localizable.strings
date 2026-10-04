@@ -549,6 +549,47 @@
 "Teal" = "Toska"; // gemma4:31b
 "Indigo" = "Indigo";
 
+// Fan curves
+"Open Fans settings" = "Buka pengaturan kipas";
+"No controllable fans are available on this Mac." = "Tidak ada kipas yang dapat dikendalikan pada Mac ini.";
+"Use one temperature curve for all fans." = "Gunakan satu kurva suhu untuk semua kipas.";
+"Use CPU/GPU load" = "Pertimbangkan beban CPU/GPU";
+"CPU/GPU load can increase the speed required by the temperature curve." = "Beban CPU/GPU dapat meningkatkan kecepatan yang diperlukan oleh kurva suhu.";
+"Fan control status" = "Status kendali kipas";
+"Temperature sensor" = "Sensor suhu";
+"Choose the temperature sensor used by this curve." = "Pilih sensor suhu yang digunakan oleh kurva ini.";
+"Physical fan" = "Kipas fisik";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Tetapkan kipas fisik untuk profil ini. Urutan kipas tidak menunjukkan kipas mana yang mendinginkan CPU atau GPU.";
+"Fan speed" = "Kecepatan kipas";
+"Enable this curve or return its fans to automatic control." = "Aktifkan kurva ini atau kembalikan kipasnya ke kendali otomatis.";
+"Reset fan curve" = "Atur ulang kurva kipas";
+"Restore the five default points without changing the selected sensor." = "Pulihkan lima titik bawaan tanpa mengubah sensor yang dipilih.";
+"Unavailable: %0" = "Tidak tersedia: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Kurva aktif";
+"Curve inactive" = "Kurva tidak aktif";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 RPM / Sasaran: %2 RPM (%3)";
+"Select an available physical fan to enable this curve." = "Pilih kipas fisik yang tersedia untuk mengaktifkan kurva ini.";
+"Stop curve" = "Hentikan kurva";
+"Enable curve" = "Aktifkan kurva";
+"Fan curve editor" = "Editor kurva kipas";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Seret titik untuk mengedit. Klik dua kali pada ruang kosong untuk menambahkan titik; klik dua kali pada titik untuk menghapusnya.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Batas maksimum 10 titik telah tercapai. Hapus satu titik sebelum menambahkan titik lain.";
+"The last point cannot be removed." = "Titik terakhir tidak dapat dihapus.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Gunakan 1 hingga 10 titik, dengan langkah 1% dan 1 °C.";
+"%0% at %1 C" = "%0% pada %1 °C";
+"Speed (%)" = "Kecepatan (%)";
+"Temperature (C)" = "Suhu (°C)";
+"Curve" = "Kurva";
+"Waiting for fresh temperature data" = "Menunggu data suhu terbaru";
+"Waiting for fresh CPU/GPU load" = "Menunggu data beban CPU/GPU terbaru";
+"Select physical fans for CPU and GPU" = "Pilih kipas fisik untuk CPU dan GPU";
+"Fan helper unavailable" = "Pembantu kipas tidak tersedia";
+"Emergency cooling" = "Pendinginan darurat";
+"Fan curve command failed" = "Perintah kurva kipas gagal";
+"Fan curve paused" = "Kurva kipas dijeda";
+"Fan curve configuration invalid" = "Konfigurasi kurva kipas tidak valid";
+
 // System Stats
 "Authorization" = "Otorisasi"; // qwen3.8:27b
 "Identificator" = "Identifikator"; // qwen3.8:27b

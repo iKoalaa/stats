@@ -549,6 +549,47 @@
 "Teal" = "Sivozelená";
 "Indigo" = "Indigo";
 
+// Fan curves
+"Open Fans settings" = "Otvoriť nastavenia ventilátorov";
+"No controllable fans are available on this Mac." = "Na tomto Macu nie sú dostupné žiadne ovládateľné ventilátory.";
+"Use one temperature curve for all fans." = "Používať jednu teplotnú krivku pre všetky ventilátory.";
+"Use CPU/GPU load" = "Zohľadniť zaťaženie CPU/GPU";
+"CPU/GPU load can increase the speed required by the temperature curve." = "Zaťaženie CPU/GPU môže zvýšiť rýchlosť požadovanú teplotnou krivkou.";
+"Fan control status" = "Stav riadenia ventilátorov";
+"Temperature sensor" = "Teplotný snímač";
+"Choose the temperature sensor used by this curve." = "Vyberte teplotný snímač používaný touto krivkou.";
+"Physical fan" = "Fyzický ventilátor";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Priraďte tomuto profilu fyzický ventilátor. Poradie ventilátorov neurčuje, ktorý chladí CPU alebo GPU.";
+"Fan speed" = "Rýchlosť ventilátora";
+"Enable this curve or return its fans to automatic control." = "Zapnite túto krivku alebo vráťte jej ventilátory k automatickému riadeniu.";
+"Reset fan curve" = "Obnoviť krivku ventilátora";
+"Restore the five default points without changing the selected sensor." = "Obnoviť päť predvolených bodov bez zmeny vybraného snímača.";
+"Unavailable: %0" = "Nedostupné: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Krivka aktívna";
+"Curve inactive" = "Krivka neaktívna";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 ot/min / Cieľ: %2 ot/min (%3)";
+"Select an available physical fan to enable this curve." = "Na zapnutie tejto krivky vyberte dostupný fyzický ventilátor.";
+"Stop curve" = "Zastaviť krivku";
+"Enable curve" = "Zapnúť krivku";
+"Fan curve editor" = "Editor krivky ventilátora";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Body upravíte potiahnutím. Dvojitým kliknutím na prázdne miesto pridáte bod; dvojitým kliknutím na bod ho odstránite.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Bol dosiahnutý maximálny počet 10 bodov. Pred pridaním ďalšieho bodu jeden odstráňte.";
+"The last point cannot be removed." = "Posledný bod nemožno odstrániť.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Použite 1 až 10 bodov s krokom 1% a 1 °C.";
+"%0% at %1 C" = "%0% pri %1 °C";
+"Speed (%)" = "Rýchlosť (%)";
+"Temperature (C)" = "Teplota (°C)";
+"Curve" = "Krivka";
+"Waiting for fresh temperature data" = "Čakanie na aktuálne teplotné údaje";
+"Waiting for fresh CPU/GPU load" = "Čakanie na aktuálne údaje o zaťažení CPU/GPU";
+"Select physical fans for CPU and GPU" = "Vyberte fyzické ventilátory pre CPU a GPU";
+"Fan helper unavailable" = "Pomocník pre ventilátory nie je dostupný";
+"Emergency cooling" = "Núdzové chladenie";
+"Fan curve command failed" = "Príkaz krivky ventilátora zlyhal";
+"Fan curve paused" = "Krivka ventilátora pozastavená";
+"Fan curve configuration invalid" = "Neplatná konfigurácia krivky ventilátora";
+
 // System Stats
 "Authorization" = "Autorizácia"; // qwen3.8:27b
 "Identificator" = "Identifikátor"; // qwen3.8:27b

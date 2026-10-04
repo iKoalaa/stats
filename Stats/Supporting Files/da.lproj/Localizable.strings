@@ -549,6 +549,47 @@
 "Teal" = "Blågrøn";
 "Indigo" = "Indigo";
 
+// Fan curves
+"Open Fans settings" = "Åbn blæserindstillinger";
+"No controllable fans are available on this Mac." = "Der er ingen styrbare blæsere tilgængelige på denne Mac.";
+"Use one temperature curve for all fans." = "Brug én temperaturkurve til alle blæsere.";
+"Use CPU/GPU load" = "Tag højde for CPU/GPU-belastning";
+"CPU/GPU load can increase the speed required by the temperature curve." = "CPU/GPU-belastningen kan øge den hastighed, som temperaturkurven kræver.";
+"Fan control status" = "Status for blæserstyring";
+"Temperature sensor" = "Temperatursensor";
+"Choose the temperature sensor used by this curve." = "Vælg den temperatursensor, som denne kurve bruger.";
+"Physical fan" = "Fysisk blæser";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Tildel en fysisk blæser til denne profil. Blæsernes rækkefølge angiver ikke, hvilken der køler CPU eller GPU.";
+"Fan speed" = "Blæserhastighed";
+"Enable this curve or return its fans to automatic control." = "Aktivér denne kurve, eller sæt dens blæsere tilbage til automatisk styring.";
+"Reset fan curve" = "Nulstil blæserkurve";
+"Restore the five default points without changing the selected sensor." = "Gendan de fem standardpunkter uden at ændre den valgte sensor.";
+"Unavailable: %0" = "Utilgængelig: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Kurve aktiv";
+"Curve inactive" = "Kurve inaktiv";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 omdr./min. / Mål: %2 omdr./min. (%3)";
+"Select an available physical fan to enable this curve." = "Vælg en tilgængelig fysisk blæser for at aktivere denne kurve.";
+"Stop curve" = "Stop kurve";
+"Enable curve" = "Aktivér kurve";
+"Fan curve editor" = "Blæserkurveeditor";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Træk punkter for at redigere. Dobbeltklik på et tomt område for at tilføje et punkt; dobbeltklik på et punkt for at fjerne det.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Maksimum på 10 punkter er nået. Fjern et punkt, før du tilføjer et nyt.";
+"The last point cannot be removed." = "Det sidste punkt kan ikke fjernes.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Brug 1 til 10 punkter i trin på 1% og 1 °C.";
+"%0% at %1 C" = "%0% ved %1 °C";
+"Speed (%)" = "Hastighed (%)";
+"Temperature (C)" = "Temperatur (°C)";
+"Curve" = "Kurve";
+"Waiting for fresh temperature data" = "Venter på nye temperaturdata";
+"Waiting for fresh CPU/GPU load" = "Venter på nye data om CPU/GPU-belastning";
+"Select physical fans for CPU and GPU" = "Vælg fysiske blæsere til CPU og GPU";
+"Fan helper unavailable" = "Blæserhjælper utilgængelig";
+"Emergency cooling" = "Nødkøling";
+"Fan curve command failed" = "Blæserkurvekommando mislykkedes";
+"Fan curve paused" = "Blæserkurve sat på pause";
+"Fan curve configuration invalid" = "Ugyldig blæserkurvekonfiguration";
+
 // System Stats
 "Authorization" = "Autorisation"; // qwen3.8:27b
 "Identificator" = "Identifikator"; // qwen3.8:27b

@@ -549,6 +549,47 @@
 "Teal" = "Γαλαζοπράσινο";
 "Indigo" = "Βαθύ μπλε";
 
+// Fan curves
+"Open Fans settings" = "Άνοιγμα ρυθμίσεων ανεμιστήρων";
+"No controllable fans are available on this Mac." = "Δεν υπάρχουν διαθέσιμοι ανεμιστήρες που μπορούν να ελεγχθούν σε αυτό το Mac.";
+"Use one temperature curve for all fans." = "Χρήση μίας καμπύλης θερμοκρασίας για όλους τους ανεμιστήρες.";
+"Use CPU/GPU load" = "Συνυπολογισμός φόρτου CPU/GPU";
+"CPU/GPU load can increase the speed required by the temperature curve." = "Ο φόρτος CPU/GPU μπορεί να αυξήσει την ταχύτητα που απαιτεί η καμπύλη θερμοκρασίας.";
+"Fan control status" = "Κατάσταση ελέγχου ανεμιστήρων";
+"Temperature sensor" = "Αισθητήρας θερμοκρασίας";
+"Choose the temperature sensor used by this curve." = "Επιλέξτε τον αισθητήρα θερμοκρασίας που χρησιμοποιεί αυτή η καμπύλη.";
+"Physical fan" = "Φυσικός ανεμιστήρας";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Αντιστοιχίστε έναν φυσικό ανεμιστήρα σε αυτό το προφίλ. Η σειρά των ανεμιστήρων δεν δείχνει ποιος ψύχει τη CPU ή τη GPU.";
+"Fan speed" = "Ταχύτητα ανεμιστήρα";
+"Enable this curve or return its fans to automatic control." = "Ενεργοποιήστε αυτή την καμπύλη ή επαναφέρετε τους ανεμιστήρες της στον αυτόματο έλεγχο.";
+"Reset fan curve" = "Επαναφορά καμπύλης ανεμιστήρα";
+"Restore the five default points without changing the selected sensor." = "Επαναφορά των πέντε προεπιλεγμένων σημείων χωρίς αλλαγή του επιλεγμένου αισθητήρα.";
+"Unavailable: %0" = "Μη διαθέσιμο: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Καμπύλη ενεργή";
+"Curve inactive" = "Καμπύλη ανενεργή";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 σ.α.λ. / Στόχος: %2 σ.α.λ. (%3)";
+"Select an available physical fan to enable this curve." = "Επιλέξτε έναν διαθέσιμο φυσικό ανεμιστήρα για να ενεργοποιήσετε αυτή την καμπύλη.";
+"Stop curve" = "Διακοπή καμπύλης";
+"Enable curve" = "Ενεργοποίηση καμπύλης";
+"Fan curve editor" = "Επεξεργαστής καμπύλης ανεμιστήρα";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Σύρετε τα σημεία για επεξεργασία. Κάντε διπλό κλικ σε κενό χώρο για να προσθέσετε ένα σημείο· κάντε διπλό κλικ σε ένα σημείο για να το αφαιρέσετε.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Έχει συμπληρωθεί το μέγιστο των 10 σημείων. Αφαιρέστε ένα σημείο πριν προσθέσετε άλλο.";
+"The last point cannot be removed." = "Το τελευταίο σημείο δεν μπορεί να αφαιρεθεί.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Χρησιμοποιήστε από 1 έως 10 σημεία, σε βήματα του 1% και του 1 °C.";
+"%0% at %1 C" = "%0% στους %1 °C";
+"Speed (%)" = "Ταχύτητα (%)";
+"Temperature (C)" = "Θερμοκρασία (°C)";
+"Curve" = "Καμπύλη";
+"Waiting for fresh temperature data" = "Αναμονή για νέα δεδομένα θερμοκρασίας";
+"Waiting for fresh CPU/GPU load" = "Αναμονή για νέα δεδομένα φόρτου CPU/GPU";
+"Select physical fans for CPU and GPU" = "Επιλέξτε φυσικούς ανεμιστήρες για CPU και GPU";
+"Fan helper unavailable" = "Ο βοηθός ανεμιστήρων δεν είναι διαθέσιμος";
+"Emergency cooling" = "Ψύξη έκτακτης ανάγκης";
+"Fan curve command failed" = "Η εντολή καμπύλης ανεμιστήρα απέτυχε";
+"Fan curve paused" = "Η καμπύλη ανεμιστήρα είναι σε παύση";
+"Fan curve configuration invalid" = "Μη έγκυρη διαμόρφωση καμπύλης ανεμιστήρα";
+
 // System Stats
 "Authorization" = "Εξουσιοδότηση"; // qwen3.8:27b
 "Identificator" = "Αναγνωριστικό"; // qwen3.8:27b

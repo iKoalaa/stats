@@ -192,6 +192,7 @@ open class Module {
     public func terminate() {
         self.willTerminate()
         self.readers.forEach{
+            $0.setControlDemand(false)
             $0.stop()
             $0.terminate()
         }
@@ -237,6 +238,22 @@ open class Module {
     
     public func setReaders(_ list: [Reader_p?]) {
         self.readers = list.filter({ $0 != nil }).map({ $0! as Reader_p })
+    }
+
+    public func refreshReader(_ reader: Reader_p) {
+        guard self.enabled else {
+            reader.lock()
+            reader.stop()
+            return
+        }
+        reader.initStoreValues(title: self.config.name)
+        let visible = self.readerHasVisibleConsumer(reader)
+        if visible { reader.unlock() } else { reader.lock() }
+        if visible || (!reader.popup && !reader.preview && !reader.sleep) {
+            reader.start()
+        } else {
+            reader.pause()
+        }
     }
     
     // determine if module is available (can be overrided in module)

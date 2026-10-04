@@ -549,6 +549,47 @@
 "Teal" = "Turkos";
 "Indigo" = "Indigo";
 
+// Fan curves
+"Open Fans settings" = "Öppna fläktinställningar";
+"No controllable fans are available on this Mac." = "Inga styrbara fläktar är tillgängliga på denna Mac.";
+"Use one temperature curve for all fans." = "Använd en temperaturkurva för alla fläktar.";
+"Use CPU/GPU load" = "Ta hänsyn till CPU/GPU-belastning";
+"CPU/GPU load can increase the speed required by the temperature curve." = "CPU/GPU-belastningen kan öka den hastighet som temperaturkurvan kräver.";
+"Fan control status" = "Status för fläktstyrning";
+"Temperature sensor" = "Temperatursensor";
+"Choose the temperature sensor used by this curve." = "Välj den temperatursensor som används av denna kurva.";
+"Physical fan" = "Fysisk fläkt";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "Tilldela en fysisk fläkt till denna profil. Fläktarnas ordning anger inte vilken som kyler CPU eller GPU.";
+"Fan speed" = "Fläkthastighet";
+"Enable this curve or return its fans to automatic control." = "Aktivera denna kurva eller återställ dess fläktar till automatisk styrning.";
+"Reset fan curve" = "Återställ fläktkurva";
+"Restore the five default points without changing the selected sensor." = "Återställ de fem standardpunkterna utan att ändra den valda sensorn.";
+"Unavailable: %0" = "Inte tillgänglig: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "Kurva aktiv";
+"Curve inactive" = "Kurva inaktiv";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 varv/min / Mål: %2 varv/min (%3)";
+"Select an available physical fan to enable this curve." = "Välj en tillgänglig fysisk fläkt för att aktivera denna kurva.";
+"Stop curve" = "Stoppa kurva";
+"Enable curve" = "Aktivera kurva";
+"Fan curve editor" = "Fläktkurveredigerare";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "Dra punkter för att redigera. Dubbelklicka på ett tomt område för att lägga till en punkt; dubbelklicka på en punkt för att ta bort den.";
+"Maximum of 10 points reached. Remove a point before adding another." = "Maximalt 10 punkter har nåtts. Ta bort en punkt innan du lägger till en ny.";
+"The last point cannot be removed." = "Den sista punkten kan inte tas bort.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "Använd 1 till 10 punkter i steg om 1% och 1 °C.";
+"%0% at %1 C" = "%0% vid %1 °C";
+"Speed (%)" = "Hastighet (%)";
+"Temperature (C)" = "Temperatur (°C)";
+"Curve" = "Kurva";
+"Waiting for fresh temperature data" = "Väntar på nya temperaturdata";
+"Waiting for fresh CPU/GPU load" = "Väntar på nya data om CPU/GPU-belastning";
+"Select physical fans for CPU and GPU" = "Välj fysiska fläktar för CPU och GPU";
+"Fan helper unavailable" = "Fläkthjälpprogrammet är inte tillgängligt";
+"Emergency cooling" = "Nödkylning";
+"Fan curve command failed" = "Fläktkurvekommandot misslyckades";
+"Fan curve paused" = "Fläktkurva pausad";
+"Fan curve configuration invalid" = "Ogiltig fläktkurvekonfiguration";
+
 // System Stats
 "Authorization" = "Auktorisation"; // qwen3.8:27b
 "Identificator" = "Identifierare"; // qwen3.8:27b

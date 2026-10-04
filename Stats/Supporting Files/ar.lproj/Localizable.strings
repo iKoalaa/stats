@@ -549,6 +549,47 @@
 "Teal" = "أزرق مخضر";
 "Indigo" = "نيلي";
 
+// Fan curves
+"Open Fans settings" = "فتح إعدادات المراوح";
+"No controllable fans are available on this Mac." = "لا توجد مراوح متاحة يمكن التحكم بها على جهاز Mac هذا.";
+"Use one temperature curve for all fans." = "استخدام منحنى حرارة واحد لجميع المراوح.";
+"Use CPU/GPU load" = "مراعاة حمل CPU/GPU";
+"CPU/GPU load can increase the speed required by the temperature curve." = "يمكن لحمل CPU/GPU زيادة السرعة التي يتطلبها منحنى الحرارة.";
+"Fan control status" = "حالة التحكم بالمراوح";
+"Temperature sensor" = "مستشعر الحرارة";
+"Choose the temperature sensor used by this curve." = "اختر مستشعر الحرارة الذي يستخدمه هذا المنحنى.";
+"Physical fan" = "مروحة فعلية";
+"Assign a physical fan to this profile. Fan order does not identify CPU or GPU cooling." = "عيّن مروحة فعلية لهذا الملف. لا يحدد ترتيب المراوح أيها يبرّد CPU أو GPU.";
+"Fan speed" = "سرعة المروحة";
+"Enable this curve or return its fans to automatic control." = "فعّل هذا المنحنى أو أعد مراوحه إلى التحكم التلقائي.";
+"Reset fan curve" = "إعادة تعيين منحنى المروحة";
+"Restore the five default points without changing the selected sensor." = "استعادة النقاط الافتراضية الخمس دون تغيير المستشعر المحدد.";
+"Unavailable: %0" = "غير متاح: %0";
+"%0 C" = "%0 °C";
+"Curve active" = "المنحنى نشط";
+"Curve inactive" = "المنحنى غير نشط";
+"%0: %1 RPM / Target: %2 RPM (%3)" = "%0: %1 دورة/دقيقة / الهدف: %2 دورة/دقيقة (%3)";
+"Select an available physical fan to enable this curve." = "اختر مروحة فعلية متاحة لتفعيل هذا المنحنى.";
+"Stop curve" = "إيقاف المنحنى";
+"Enable curve" = "تفعيل المنحنى";
+"Fan curve editor" = "محرر منحنى المروحة";
+"Drag points to edit. Double-click empty space to add a point; double-click a point to remove it." = "اسحب النقاط لتعديلها. انقر مرتين على مساحة فارغة لإضافة نقطة؛ وانقر مرتين على نقطة لإزالتها.";
+"Maximum of 10 points reached. Remove a point before adding another." = "تم بلوغ الحد الأقصى وهو 10 نقاط. أزل نقطة قبل إضافة أخرى.";
+"The last point cannot be removed." = "لا يمكن إزالة النقطة الأخيرة.";
+"Use 1 to 10 points, in steps of 1% and 1 C." = "استخدم من 1 إلى 10 نقاط، بخطوات قدرها 1% و1 °C.";
+"%0% at %1 C" = "%0% عند %1 °C";
+"Speed (%)" = "السرعة (%)";
+"Temperature (C)" = "الحرارة (°C)";
+"Curve" = "منحنى";
+"Waiting for fresh temperature data" = "بانتظار بيانات حرارة حديثة";
+"Waiting for fresh CPU/GPU load" = "بانتظار بيانات حمل CPU/GPU حديثة";
+"Select physical fans for CPU and GPU" = "اختر مراوح فعلية لكل من CPU وGPU";
+"Fan helper unavailable" = "مساعد المراوح غير متاح";
+"Emergency cooling" = "تبريد طارئ";
+"Fan curve command failed" = "فشل أمر منحنى المروحة";
+"Fan curve paused" = "منحنى المروحة متوقف مؤقتًا";
+"Fan curve configuration invalid" = "إعدادات منحنى المروحة غير صالحة";
+
 // System Stats
 "Authorization" = "التصريح"; // qwen3.8:27b
 "Identificator" = "المعرّف"; // qwen3.8:27b
